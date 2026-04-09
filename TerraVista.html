@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TerraVista - Wanderlust Awaits</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        forest: {
+                            50: '#f2fcf5',
+                            100: '#e1f8e8',
+                            200: '#c3eed0',
+                            300: '#94deb0',
+                            400: '#5cc58a',
+                            500: '#36a868',
+                            600: '#268751',
+                            700: '#206b43',
+                            800: '#1d5538',
+                            900: '#194631',
+                            950: '#0d261c',
+                        },
+                        earth: {
+                            100: '#f5f0e6',
+                            200: '#e6dcc9',
+                            300: '#d4c4a8',
+                            800: '#5c4d3c',
+                            900: '#3d3226',
+                        },
+                        sand: '#faf6f1',
+                        leaf: '#7cb342',
+                        moss: '#558b2f',
+                        emerald: '#00bfa5',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        * {
+            font-family: 'DM Sans', sans-serif;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Playfair Display', serif;
+        }
+        
+        /* Organic Animations */
+        @keyframes sway {
+            0%, 100% { transform: rotate(-2deg); }
+            50% { transform: rotate(2deg); }
+        }
+        @keyframes float-leaf {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(5deg); }
+        }
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.05); opacity: 1; }
+        }
+        
+        .animate-sway { animation: sway 6s ease-in-out infinite; }
+        .animate-float-leaf { animation: float-leaf 5s ease-in-out infinite; }
+        .animate-breathe { animation: breathe 4s ease-in-out infinite; }
+        
+        /* Organic Shapes */
+        .organic-blob {
+            border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+        }
+        .organic-blob-2 {
+            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+        }
+        .organic-blob-3 {
+            border-radius: 50% 50% 20% 80% / 25% 80% 20% 75%;
+        }
+        
+        /* Glassmorphism - Nature Edition */
+        .glass-nature {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(120, 179, 66, 0.2);
+        }
+        .glass-dark-green {
+            background: rgba(13, 38, 28, 0.9);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(92, 197, 138, 0.1);
+        }
+        
+        /* Custom Scrollbar - Organic */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: #f5f0e6; }
+        ::-webkit-scrollbar-thumb { 
+            background: linear-gradient(180deg, #36a868, #206b43); 
+            border-radius: 5px;
+            border: 2px solid #f5f0e6;
+        }
+        
+        /* Leaf Pattern Background */
+        .leaf-pattern {
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 30c0-11.046-8.954-20-20-20s-20 8.954-20 20 8.954 20 20 20 20-8.954 20-20z' fill='%2336a868' fill-opacity='0.03'/%3E%3C/svg%3E");
+        }
+        
+        /* Hover Effects */
+        .hover-lift {
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+        }
+        .hover-lift:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 40px -15px rgba(54, 168, 104, 0.3);
+        }
+        
+        /* Text Gradient */
+        .text-gradient-green {
+            background: linear-gradient(135deg, #1d5538 0%, #36a868 50%, #7cb342 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* Smooth Reveal */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Chat Widget Styles */
+        .chat-widget {
+            position: fixed;
+            bottom: 100px;
+            right: 24px;
+            width: 380px;
+            max-height: 600px;
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(120, 179, 66, 0.3);
+            overflow: hidden;
+            z-index: 1000;
+            transform: scale(0.95) translateY(20px);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        
+        .chat-widget.open {
+            transform: scale(1) translateY(0);
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .chat-messages {
+            height: 350px;
+            overflow-y: auto;
+            padding: 20px;
+            background: linear-gradient(180deg, #f8faf9 0%, #ffffff 100%);
+        }
+        
+        .message {
+            margin-bottom: 16px;
+            animation: messageSlide 0.3s ease;
+        }
+        
+        @keyframes messageSlide {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .message.user {
+            text-align: right;
+        }
+        
+        .message.user .bubble {
+            background: linear-gradient(135deg, #36a868 0%, #206b43 100%);
+            color: white;
+            border-radius: 20px 20px 4px 20px;
+            display: inline-block;
+            padding: 12px 16px;
+            max-width: 80%;
+            box-shadow: 0 4px 12px rgba(54, 168, 104, 0.3);
+        }
+        
+        .message.bot .bubble {
+            background: white;
+            color: #1d5538;
+            border-radius: 20px 20px 20px 4px;
+            display: inline-block;
+            padding: 12px 16px;
+            max-width: 80%;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e1f8e8;
+        }
+        
+        .chat-input-area {
+            padding: 16px 20px;
+            background: white;
+            border-top: 1px solid #e1f8e8;
+        }
+        
+        .suggestion-chips {
+            display: flex;
+            gap: 8px;
+            padding: 12px 20px;
+            background: #f8faf9;
+            overflow-x: auto;
+            border-top: 1px solid #e1f8e8;
+        }
+        
+        .suggestion-chip {
+            background: white;
+            border: 1px solid #c3eed0;
+            color: #206b43;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+        
+        .suggestion-chip:hover {
+            background: #36a868;
+            color: white;
+            border-color: #36a868;
+        }
+        
+        .typing-indicator {
+            display: flex;
+            gap: 4px;
+            padding: 12px 16px;
+            background: white;
+            border-radius: 20px 20px 20px 4px;
+            border: 1px solid #e1f8e8;
+            width: fit-content;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+        
+        .typing-indicator span {
+            width: 8px;
+            height: 8px;
+            background: #36a868;
+            border-radius: 50%;
+            animation: typingBounce 1.4s ease-in-out infinite both;
+        }
+        
+        .typing-indicator span:nth-child(1) { animation-delay: -0.32s; }
+        .typing-indicator span:nth-child(2) { animation-delay: -0.16s; }
+        
+        @keyframes typingBounce {
+            0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+            40% { transform: scale(1); opacity: 1; }
+        }
+    </style>
+</head>
+<body class="bg-sand text-earth-900 overflow-x-hidden">
+
+    <!-- Floating Leaves Background -->
+    <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+        <div class="absolute top-20 left-10 w-8 h-8 text-forest-400 opacity-20 animate-float-leaf">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17,8C8,10 5.9,16.17 3.82,21.34L5.71,22L6.66,19.7C7.14,19.87 7.64,20 8,20C19,20 22,3 22,3C21,5 14,5.25 9,6.25C4,7.25 2,11.5 2,13.5C2,15.5 3.75,17.25 3.75,17.25C7,8 17,8 17,8Z"/></svg>
+        </div>
+        <div class="absolute top-40 right-20 w-6 h-6 text-forest-300 opacity-30 animate-float-leaf" style="animation-delay: 1s;">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17,8C8,10 5.9,16.17 3.82,21.34L5.71,22L6.66,19.7C7.14,19.87 7.64,20 8,20C19,20 22,3 22,3C21,5 14,5.25 9,6.25C4,7.25 2,11.5 2,13.5C2,15.5 3.75,17.25 3.75,17.25C7,8 17,8 17,8Z"/></svg>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 transition-all duration-500 py-4" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex items-center space-x-3 group cursor-pointer">
+                    <div class="w-12 h-12 bg-gradient-to-br from-forest-600 to-forest-800 organic-blob flex items-center justify-center transform group-hover:rotate-12 transition-transform duration-500 shadow-lg">
+                        <i data-lucide="mountain" class="w-7 h-7 text-white"></i>
+                    </div>
+                    <div>
+                        <span class="text-2xl font-bold text-forest-900 tracking-tight">TerraVista</span>
+                        <p class="text-xs text-forest-600 tracking-widest uppercase">Explore Naturally</p>
+                    </div>
+                </div>
+                
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#destinations" class="text-earth-800 hover:text-forest-700 transition-colors relative group font-medium">
+                        Destinations
+                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-forest-500 group-hover:w-full transition-all duration-300"></span>
+                    </a>
+                    <a href="#" class="text-earth-800 hover:text-forest-700 transition-colors relative group font-medium">
+                        Experiences
+                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-forest-500 group-hover:w-full transition-all duration-300"></span>
+                    </a>
+                    <a href="#" class="text-earth-800 hover:text-forest-700 transition-colors relative group font-medium">
+                        About
+                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-forest-500 group-hover:w-full transition-all duration-300"></span>
+                    </a>
+                </div>
+
+                <div class="flex items-center space-x-4">
+                    <button class="hidden md:block text-earth-800 hover:text-forest-700 transition-colors font-medium">Sign In</button>
+                    <button class="bg-gradient-to-r from-forest-600 to-forest-700 hover:from-forest-500 hover:to-forest-600 text-white px-6 py-3 rounded-full font-medium transition-all transform hover:scale-105 shadow-lg hover:shadow-forest-500/30 flex items-center space-x-2">
+                        <span>Start Journey</span>
+                        <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center pt-24 overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&q=80" alt="Mountain landscape" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-gradient-to-r from-sand/95 via-sand/70 to-transparent"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-sand via-transparent to-transparent"></div>
+        </div>
+
+        <div class="absolute top-1/4 right-0 w-96 h-96 bg-forest-200/30 organic-blob-2 blur-3xl animate-breathe"></div>
+
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div class="space-y-8">
+                    <div class="inline-flex items-center space-x-2 glass-nature px-4 py-2 rounded-full reveal">
+                        <span class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
+                        <span class="text-sm text-forest-800 font-medium">Over 10,000 eco-adventures worldwide</span>
+                    </div>
+
+                    <h1 class="text-5xl md:text-7xl font-bold leading-tight reveal" style="transition-delay: 0.1s;">
+                        Let Nature<br>
+                        <span class="text-gradient-green italic">Call You Home</span>
+                    </h1>
+
+                    <p class="text-xl text-earth-800 leading-relaxed max-w-lg reveal" style="transition-delay: 0.2s;">
+                        Discover breathtaking landscapes, immerse yourself in local cultures, and find your perfect escape. We curate journeys that reconnect you with the wild.
+                    </p>
+
+                    <!-- Search Bar -->
+                    <div class="glass-nature rounded-3xl p-2 shadow-2xl reveal max-w-2xl" style="transition-delay: 0.3s;">
+                        <div class="flex flex-col md:flex-row gap-2">
+                            <div class="flex-1 relative group">
+                                <div class="absolute inset-y-0 left-4 flex items-center pointer-events-none">
+                                    <i data-lucide="map-pin" class="w-5 h-5 text-forest-500"></i>
+                                </div>
+                                <input type="text" placeholder="Where do you want to go?" class="w-full bg-transparent border-0 rounded-2xl py-4 pl-12 pr-4 text-earth-900 placeholder-earth-400 focus:outline-none focus:ring-2 focus:ring-forest-300 transition-all" id="locationInput">
+                            </div>
+                            <div class="flex-1 relative group">
+                                <div class="absolute inset-y-0 left-4 flex items-center pointer-events-none">
+                                    <i data-lucide="calendar" class="w-5 h-5 text-forest-500"></i>
+                                </div>
+                                <input type="text" placeholder="When?" onfocus="(this.type='date')" class="w-full bg-transparent border-0 rounded-2xl py-4 pl-12 pr-4 text-earth-900 placeholder-earth-400 focus:outline-none focus:ring-2 focus:ring-forest-300 transition-all">
+                            </div>
+                            <button onclick="exploreDestinations()" class="bg-gradient-to-r from-forest-600 to-forest-700 hover:from-forest-500 hover:to-forest-600 text-white px-8 py-4 rounded-2xl font-semibold transition-all transform hover:scale-105 flex items-center justify-center space-x-2 shadow-lg hover:shadow-forest-500/30">
+                                <i data-lucide="search" class="w-5 h-5"></i>
+                                <span class="hidden md:inline">Explore</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Quick Tags -->
+                    <div class="flex flex-wrap gap-3 reveal" style="transition-delay: 0.4s;">
+                        <span class="text-sm text-earth-600">Popular:</span>
+                        <button onclick="quickSearch('Costa Rica')" class="px-4 py-1.5 bg-white/60 hover:bg-forest-100 rounded-full text-sm text-forest-800 transition-all hover:shadow-md border border-forest-100">Costa Rica</button>
+                        <button onclick="quickSearch('New Zealand')" class="px-4 py-1.5 bg-white/60 hover:bg-forest-100 rounded-full text-sm text-forest-800 transition-all hover:shadow-md border border-forest-100">New Zealand</button>
+                        <button onclick="quickSearch('Norway')" class="px-4 py-1.5 bg-white/60 hover:bg-forest-100 rounded-full text-sm text-forest-800 transition-all hover:shadow-md border border-forest-100">Norway</button>
+                    </div>
+                </div>
+
+                <div class="hidden lg:block relative reveal" style="transition-delay: 0.5s;">
+                    <div class="relative">
+                        <div class="absolute -inset-4 bg-gradient-to-r from-forest-400 to-leaf organic-blob opacity-20 animate-breathe"></div>
+                        <div class="relative glass-nature rounded-[2rem] p-4 shadow-2xl transform hover:rotate-1 transition-transform duration-700">
+                            <img src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=800&q=80" alt="Traveler in nature" class="rounded-[1.5rem] w-full h-[500px] object-cover">
+                            <div class="absolute bottom-8 left-8 right-8 glass-nature rounded-2xl p-4 flex items-center space-x-4">
+                                <div class="w-12 h-12 bg-forest-100 rounded-full flex items-center justify-center">
+                                    <i data-lucide="compass" class="w-6 h-6 text-forest-600"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-earth-600">Next Adventure</p>
+                                    <p class="font-bold text-forest-900">Swiss Alps Hiking</p>
+                                </div>
+                                <div class="ml-auto text-right">
+                                    <p class="text-2xl font-bold text-forest-600">4.9</p>
+                                    <div class="flex text-yellow-400 text-xs">
+                                        <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                                        <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                                        <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                                        <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                                        <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Destinations -->
+    <section class="py-24 relative leaf-pattern" id="destinations">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 reveal">
+                <span class="text-forest-600 font-medium tracking-widest uppercase text-sm">Curated Journeys</span>
+                <h2 class="text-4xl md:text-5xl font-bold text-earth-900 mt-3">Destinations That<br><span class="text-gradient-green">Take Your Breath Away</span></h2>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8" id="destinationsGrid">
+                <!-- Card 1 -->
+                <div class="group cursor-pointer reveal">
+                    <div class="relative overflow-hidden rounded-[2rem] aspect-[4/5] mb-4">
+                        <img src="https://images.unsplash.com/photo-1516426122078-c23e76319801?w=800&q=80" alt="Safari" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <div class="absolute top-4 right-4 glass-nature px-3 py-1 rounded-full text-xs font-bold text-forest-800 transform translate-y-[-20px] opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+                            Save 20%
+                        </div>
+                        <div class="absolute bottom-0 left-0 right-0 p-6 transform translate-y-full group-hover:translate-y-0 transition-transform duration-500">
+                            <button class="w-full bg-white text-forest-800 py-3 rounded-xl font-semibold hover:bg-forest-50 transition-colors">
+                                View Details
+                            </button>
+                        </div>
+                    </div>
+                    <div class="space-y-2">
+                        <div class="flex justify-between items-start">
+                            <h3 class="text-2xl font-bold text-earth-900 group-hover:text-forest-700 transition-colors">Kenyan Safari</h3>
+                            <span class="text-forest-600 font-bold">$2,450</span>
+                        </div>
+                        <p class="text-earth-600 text-sm">7 days • Wildlife • Adventure</p>
+                        <div class="flex items-center space-x-1 text-yellow-500 text-sm">
+                            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                            <span class="font-medium">4.9</span>
+                            <span class="text-earth-400">(128 reviews)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="group cursor-pointer reveal" style="transition-delay: 0.1s;">
+                    <div class="relative overflow-hidden rounded-[2rem] aspect-[4/5] mb-4">
+                        <img src="https://images.unsplash.com/photo-1531366936337-7c912a4589a7?w=800&q=80" alt="Northern Lights" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <div class="absolute top-4 right-4 glass-nature px-3 py-1 rounded-full text-xs font-bold text-forest-800 transform translate-y-[-20px] opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+                            Trending
+                        </div>
+                        <div class="absolute bottom-0 left-0 right-0 p-6 transform translate-y-full group-hover:translate-y-0 transition-transform duration-500">
+                            <button class="w-full bg-white text-forest-800 py-3 rounded-xl font-semibold hover:bg-forest-50 transition-colors">
+                                View Details
+                            </button>
+                        </div>
+                    </div>
+                    <div class="space-y-2">
+                        <div class="flex justify-between items-start">
+                            <h3 class="text-2xl font-bold text-earth-900 group-hover:text-forest-700 transition-colors">Iceland Aurora</h3>
+                            <span class="text-forest-600 font-bold">$1,890</span>
+                        </div>
+                        <p class="text-earth-600 text-sm">5 days • Northern Lights • Relax</p>
+                        <div class="flex items-center space-x-1 text-yellow-500 text-sm">
+                            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                            <span class="font-medium">5.0</span>
+                            <span class="text-earth-400">(256 reviews)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="group cursor-pointer reveal" style="transition-delay: 0.2s;">
+                    <div class="relative overflow-hidden rounded-[2rem] aspect-[4/5] mb-4">
+                        <img src="https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?w=800&q=80" alt="Bali" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <div class="absolute top-4 right-4 glass-nature px-3 py-1 rounded-full text-xs font-bold text-forest-800 transform translate-y-[-20px] opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+                            New
+                        </div>
+                        <div class="absolute bottom-0 left-0 right-0 p-6 transform translate-y-full group-hover:translate-y-0 transition-transform duration-500">
+                            <button class="w-full bg-white text-forest-800 py-3 rounded-xl font-semibold hover:bg-forest-50 transition-colors">
+                                View Details
+                            </button>
+                        </div>
+                    </div>
+                    <div class="space-y-2">
+                        <div class="flex justify-between items-start">
+                            <h3 class="text-2xl font-bold text-earth-900 group-hover:text-forest-700 transition-colors">Bali Retreat</h3>
+                            <span class="text-forest-600 font-bold">$1,200</span>
+                        </div>
+                        <p class="text-earth-600 text-sm">10 days • Wellness • Culture</p>
+                        <div class="flex items-center space-x-1 text-yellow-500 text-sm">
+                            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                            <span class="font-medium">4.8</span>
+                            <span class="text-earth-400">(412 reviews)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Chat Widget Button -->
+    <button onclick="toggleChat()" id="chatButton" class="fixed bottom-8 right-8 w-16 h-16 bg-gradient-to-r from-forest-600 to-forest-700 hover:from-forest-500 hover:to-forest-600 text-white rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-transform z-50 group">
+        <i data-lucide="message-circle" class="w-7 h-7 group-hover:rotate-12 transition-transform"></i>
+        <span class="absolute -top-2 -right-2 w-5 h-5 bg-red-500 rounded-full flex items-center justify-center text-xs font-bold">1</span>
+    </button>
+
+    <!-- Chat Widget -->
+    <div id="chatWidget" class="chat-widget">
+        <!-- Header -->
+        <div class="bg-gradient-to-r from-forest-700 to-forest-800 p-4 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
+                    <i data-lucide="leaf" class="w-5 h-5 text-white"></i>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white">Terra Guide</h4>
+                    <div class="flex items-center space-x-1">
+                        <span class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></span>
+                        <span class="text-xs text-emerald-200">Online now</span>
+                    </div>
+                </div>
+            </div>
+            <button onclick="toggleChat()" class="w-8 h-8 hover:bg-white/10 rounded-full flex items-center justify-center transition-colors">
+                <i data-lucide="x" class="w-5 h-5 text-white"></i>
+            </button>
+        </div>
+
+        <!-- Messages -->
+        <div class="chat-messages" id="chatMessages">
+            <div class="message bot">
+                <div class="bubble">
+                    👋 Hello, adventurer! I'm your Terra Guide. I can help you find the perfect eco-friendly destination, check prices, or plan your dream trip. What would you like to know?
+                </div>
+                <span class="text-xs text-earth-400 mt-1 block">Just now</span>
+            </div>
+        </div>
+
+        <!-- Suggestion Chips -->
+        <div class="suggestion-chips">
+            <button class="suggestion-chip" onclick="sendQuickMessage('What are the prices?')">💰 Pricing</button>
+            <button class="suggestion-chip" onclick="sendQuickMessage('Best destinations?')">🌍 Destinations</button>
+            <button class="suggestion-chip" onclick="sendQuickMessage('Book a call')">📞 Book Call</button>
+            <button class="suggestion-chip" onclick="sendQuickMessage('Eco options?')">🌱 Eco Options</button>
+        </div>
+
+        <!-- Input -->
+        <div class="chat-input-area">
+            <form onsubmit="event.preventDefault(); handleChatSubmit();" class="flex gap-2">
+                <input 
+                    type="text" 
+                    id="chatInput" 
+                    placeholder="Type your message..." 
+                    class="flex-1 bg-forest-50 border border-forest-200 rounded-full px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-forest-400 focus:border-transparent transition-all"
+                    autocomplete="off"
+                >
+                <button 
+                    type="submit" 
+                    class="w-12 h-12 bg-gradient-to-r from-forest-600 to-forest-700 hover:from-forest-500 hover:to-forest-600 text-white rounded-full flex items-center justify-center transition-all transform hover:scale-105 shadow-lg"
+                >
+                    <i data-lucide="send" class="w-5 h-5"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Chat State
+        let chatOpen = false;
+        let isTyping = false;
+
+        // Toggle Chat Widget
+        function toggleChat() {
+            const widget = document.getElementById('chatWidget');
+            const button = document.getElementById('chatButton');
+            chatOpen = !chatOpen;
+            
+            if (chatOpen) {
+                widget.classList.add('open');
+                button.style.transform = 'scale(0)';
+                setTimeout(() => {
+                    button.style.display = 'none';
+                    document.getElementById('chatInput').focus();
+                }, 300);
+            } else {
+                widget.classList.remove('open');
+                button.style.display = 'flex';
+                setTimeout(() => {
+                    button.style.transform = 'scale(1)';
+                }, 10);
+            }
+        }
+
+        // Handle Form Submit
+        function handleChatSubmit() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            
+            if (message && !isTyping) {
+                addUserMessage(message);
+                input.value = '';
+                showTypingIndicator();
+                
+                // Simulate AI response delay
+                setTimeout(() => {
+                    removeTypingIndicator();
+                    addBotMessage(getAIResponse(message));
+                }, 1500 + Math.random() * 1000);
+            }
+        }
+
+        // Send Quick Message from Chips
+        function sendQuickMessage(message) {
+            if (!isTyping) {
+                addUserMessage(message);
+                showTypingIndicator();
+                
+                setTimeout(() => {
+                    removeTypingIndicator();
+                    addBotMessage(getAIResponse(message));
+                }, 1200);
+            }
+        }
+
+        // Add User Message
+        function addUserMessage(text) {
+            const messagesDiv = document.getElementById('chatMessages');
+            const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            
+            const messageHTML = `
+                <div class="message user">
+                    <div class="bubble">${escapeHtml(text)}</div>
+                    <span class="text-xs text-earth-400 mt-1 block text-right">${time}</span>
+                </div>
+            `;
+            
+            messagesDiv.insertAdjacentHTML('beforeend', messageHTML);
+            scrollToBottom();
+        }
+
+        // Add Bot Message
+        function addBotMessage(text) {
+            const messagesDiv = document.getElementById('chatMessages');
+            const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            
+            const messageHTML = `
+                <div class="message bot">
+                    <div class="bubble">${text}</div>
+                    <span class="text-xs text-earth-400 mt-1 block">${time}</span>
+                </div>
+            `;
+            
+            messagesDiv.insertAdjacentHTML('beforeend', messageHTML);
+            scrollToBottom();
+        }
+
+        // Show Typing Indicator
+        function showTypingIndicator() {
+            isTyping = true;
+            const messagesDiv = document.getElementById('chatMessages');
+            
+            const typingHTML = `
+                <div class="message bot" id="typingIndicator">
+                    <div class="typing-indicator">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+            `;
+            
+            messagesDiv.insertAdjacentHTML('beforeend', typingHTML);
+            scrollToBottom();
+        }
+
+        // Remove Typing Indicator
+        function removeTypingIndicator() {
+            isTyping = false;
+            const indicator = document.getElementById('typingIndicator');
+            if (indicator) {
+                indicator.remove();
+            }
+        }
+
+        // Get AI Response based on input
+        function getAIResponse(input) {
+            const lowerInput = input.toLowerCase();
+            
+            // Pricing related
+            if (lowerInput.includes('price') || lowerInput.includes('cost') || lowerInput.includes('how much') || lowerInput.includes('pricing')) {
+                return "Our trips range from $1,200 to $4,500 depending on destination and duration. 🏔️<br><br><strong>Popular options:</strong><br>• Bali Wellness: $1,200<br>• Iceland Aurora: $1,890<br>• Kenya Safari: $2,450<br><br>All prices include eco-lodging, local guides, and carbon offset. Would you like a detailed quote?";
+            }
+            
+            // Destinations
+            if (lowerInput.includes('destination') || lowerInput.includes('where') || lowerInput.includes('place') || lowerInput.includes('go')) {
+                return "Based on current trends, here are our top picks:<br><br>🥇 <strong>Costa Rica</strong> - Rainforest & beaches<br>🥈 <strong>New Zealand</strong> - Adventure capital<br>🥉 <strong>Norway</strong> - Northern Lights<br><br>Which type of experience interests you? Adventure, wellness, or wildlife?";
+            }
+            
+            // Booking/Call
+            if (lowerInput.includes('book') || lowerInput.includes('call') || lowerInput.includes('appointment') || lowerInput.includes('schedule')) {
+                return "I'd love to help you plan! 📞<br><br>You can schedule a free 30-minute consultation with our travel experts.<br><br><strong>Available slots:</strong><br>• Tomorrow 10:00 AM<br>• Tomorrow 2:00 PM<br>• Friday 11:00 AM<br><br>Shall I book one of these for you?";
+            }
+            
+            // Eco/Sustainability
+            if (lowerInput.includes('eco') || lowerInput.includes('green') || lowerInput.includes('sustainable') || lowerInput.includes('carbon')) {
+                return "🌱 Sustainability is at our core!<br><br>• 100% carbon-neutral trips<br>• B-Corp certified<br>• Local community support<br>• Plastic-free itineraries<br><br>Every booking plants 10 trees. Last month our travelers helped reforest 50 acres! Want to learn more about our impact?";
+            }
+            
+            // Greetings
+            if (lowerInput.includes('hello') || lowerInput.includes('hi') || lowerInput.includes('hey')) {
+                return "Hello there! 🌿 Ready to plan an unforgettable adventure? I can help with:<br><br>• Finding destinations<br>• Checking prices<br>• Booking consultations<br>• Eco-travel tips<br><br>What would you like to explore?";
+            }
+            
+            // Default response
+            const defaults = [
+                "That's a great question! 🌲 I'd recommend checking out our Kenya Safari package - it includes luxury eco-lodges and guided wildlife tours. Would you like more details?",
+                "Interesting! Have you considered Iceland? The Northern Lights season is peaking right now. 🌌 I can send you a customized itinerary.",
+                "I'd love to help with that! Our travel experts specialize in crafting personalized eco-adventures. Would you like to schedule a quick call to discuss your preferences?",
+                "Great choice thinking about sustainable travel! 🌍 We have some amazing options that support local conservation efforts. Which region interests you - Africa, Europe, or Asia?"
+            ];
+            
+            return defaults[Math.floor(Math.random() * defaults.length)];
+        }
+
+        // Scroll to bottom of messages
+        function scrollToBottom() {
+            const messagesDiv = document.getElementById('chatMessages');
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        // Escape HTML to prevent XSS
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Handle Enter key in chat input
+        document.getElementById('chatInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                handleChatSubmit();
+            }
+        });
+
+        // Other functions
+        function quickSearch(destination) {
+            document.getElementById('locationInput').value = destination;
+            document.getElementById('destinations').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function exploreDestinations() {
+            const input = document.getElementById('locationInput');
+            if (input.value) {
+                document.getElementById('destinations').scrollIntoView({ behavior: 'smooth' });
+            } else {
+                input.focus();
+                input.classList.add('ring-2', 'ring-forest-400');
+                setTimeout(() => input.classList.remove('ring-2', 'ring-forest-400'), 1000);
+            }
+        }
+
+        // Scroll reveal animation
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('glass-nature', 'shadow-lg', 'py-0');
+                navbar.classList.remove('py-4');
+            } else {
+                navbar.classList.remove('glass-nature', 'shadow-lg', 'py-0');
+                navbar.classList.add('py-4');
+            }
+        });
+
+        // Open chat automatically after 5 seconds
+        setTimeout(() => {
+            if (!chatOpen) {
+                const button = document.getElementById('chatButton');
+                button.classList.add('animate-bounce');
+                setTimeout(() => button.classList.remove('animate-bounce'), 2000);
+            }
+        }, 5000);
+    </script>
+</body>
+</html>

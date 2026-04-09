@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verdant Voyages | AI-Powered Sustainable Travel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1F7A63',
+                        secondary: '#A8D5BA',
+                        accent: '#4FD1C5',
+                        cream: '#F6FBF9',
+                        dark: '#1a1a1a',
+                    },
+                    fontFamily: {
+                        heading: ['Poppins', 'sans-serif'],
+                        body: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F6FBF9;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* Custom animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(79, 209, 197, 0.4); }
+            50% { box-shadow: 0 0 40px rgba(79, 209, 197, 0.6); }
+        }
+        @keyframes slide-up {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes gradient-shift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .animate-float { animation: float 6s ease-in-out infinite; }
+        .animate-pulse-glow { animation: pulse-glow 3s ease-in-out infinite; }
+        .animate-slide-up { animation: slide-up 0.6s ease-out forwards; }
+        
+        /* Glass morphism */
+        .glass {
+            background: rgba(246, 251, 249, 0.85);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(168, 213, 186, 0.3);
+        }
+        
+        /* Gradient text */
+        .text-gradient {
+            background: linear-gradient(135deg, #1F7A63 0%, #4FD1C5 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #F6FBF9; }
+        ::-webkit-scrollbar-thumb { 
+            background: linear-gradient(180deg, #1F7A63, #4FD1C5); 
+            border-radius: 4px;
+        }
+        
+        /* Card hover effects */
+        .card-lift {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .card-lift:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px -15px rgba(31, 122, 99, 0.3);
+        }
+        
+        /* Chat widget styles */
+        .chat-widget {
+            position: fixed;
+            bottom: 100px;
+            right: 24px;
+            width: 380px;
+            max-height: 600px;
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(168, 213, 186, 0.4);
+            overflow: hidden;
+            z-index: 1000;
+            transform: scale(0.95) translateY(20px);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        
+        .chat-widget.open {
+            transform: scale(1) translateY(0);
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .chat-messages {
+            height: 320px;
+            overflow-y: auto;
+            padding: 20px;
+            background: linear-gradient(180deg, #F6FBF9 0%, #ffffff 100%);
+        }
+        
+        .message {
+            margin-bottom: 16px;
+            animation: messageSlide 0.3s ease;
+        }
+        
+        @keyframes messageSlide {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .message.user { text-align: right; }
+        
+        .message.user .bubble {
+            background: linear-gradient(135deg, #1F7A63 0%, #4FD1C5 100%);
+            color: white;
+            border-radius: 20px 20px 4px 20px;
+            display: inline-block;
+            padding: 12px 16px;
+            max-width: 80%;
+            box-shadow: 0 4px 12px rgba(31, 122, 99, 0.3);
+        }
+        
+        .message.bot .bubble {
+            background: white;
+            color: #1a1a1a;
+            border-radius: 20px 20px 20px 4px;
+            display: inline-block;
+            padding: 12px 16px;
+            max-width: 80%;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            border: 1px solid #A8D5BA;
+        }
+        
+        .typing-indicator {
+            display: flex;
+            gap: 4px;
+            padding: 12px 16px;
+            background: white;
+            border-radius: 20px 20px 20px 4px;
+            border: 1px solid #A8D5BA;
+            width: fit-content;
+        }
+        
+        .typing-indicator span {
+            width: 8px;
+            height: 8px;
+            background: #1F7A63;
+            border-radius: 50%;
+            animation: typingBounce 1.4s ease-in-out infinite both;
+        }
+        
+        .typing-indicator span:nth-child(1) { animation-delay: -0.32s; }
+        .typing-indicator span:nth-child(2) { animation-delay: -0.16s; }
+        
+        @keyframes typingBounce {
+            0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+            40% { transform: scale(1); opacity: 1; }
+        }
+        
+        .suggestion-chips {
+            display: flex;
+            gap: 8px;
+            padding: 12px 20px;
+            background: #F6FBF9;
+            border-top: 1px solid #A8D5BA;
+            overflow-x: auto;
+        }
+        
+        .suggestion-chip {
+            background: white;
+            border: 1px solid #A8D5BA;
+            color: #1F7A63;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+        
+        .suggestion-chip:hover {
+            background: #1F7A63;
+            color: white;
+            border-color: #1F7A63;
+        }
+        
+        /* AI Recommendation Cards */
+        .ai-card {
+            background: linear-gradient(135deg, rgba(168, 213, 186, 0.2) 0%, rgba(79, 209, 197, 0.1) 100%);
+            border: 1px solid rgba(168, 213, 186, 0.4);
+        }
+        
+        /* Mode toggle */
+        .mode-toggle {
+            position: relative;
+            background: #F6FBF9;
+            border: 2px solid #A8D5BA;
+            border-radius: 50px;
+            padding: 4px;
+        }
+        
+        .mode-toggle-indicator {
+            position: absolute;
+            background: linear-gradient(135deg, #1F7A63 0%, #4FD1C5 100%);
+            border-radius: 50px;
+            transition: all 0.3s ease;
+        }
+        
+        /* Price tag */
+        .price-tag {
+            background: linear-gradient(135deg, #1F7A63 0%, #4FD1C5 100%);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        /* Badge */
+        .badge-ai {
+            background: rgba(79, 209, 197, 0.2);
+            color: #1F7A63;
+            border: 1px solid #4FD1C5;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        /* Reveal animation */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="text-gray-800 overflow-x-hidden">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 transition-all duration-300 py-4" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-3 group cursor-pointer">
+                    <div class="w-10 h-10 bg-gradient-to-br from-primary to-accent rounded-xl flex items-center justify-center transform group-hover:rotate-12 transition-transform shadow-lg">
+                        <i data-lucide="compass" class="w-6 h-6 text-white"></i>
+                    </div>
+                    <div>
+                        <span class="text-xl font-bold text-primary tracking-tight">Verdant Voyages</span>
+                    </div>
+                </div>
+                
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#stays" class="text-gray-600 hover:text-primary transition-colors font-medium">Stays</a>
+                    <a href="#flights" class="text-gray-600 hover:text-primary transition-colors font-medium">Flights</a>
+                    <a href="#experiences" class="text-gray-600 hover:text-primary transition-colors font-medium">Experiences</a>
+                    <a href="#ai-planner" class="text-gray-600 hover:text-primary transition-colors font-medium flex items-center gap-1">
+                        <i data-lucide="sparkles" class="w-4 h-4 text-accent"></i>
+                        AI Planner
+                    </a>
+                </div>
+
+                <div class="flex items-center space-x-4">
+                    <button class="hidden md:block text-gray-600 hover:text-primary transition-colors font-medium">Sign In</button>
+                    <button class="bg-primary hover:bg-opacity-90 text-white px-6 py-2.5 rounded-full font-medium transition-all transform hover:scale-105 shadow-lg hover:shadow-primary/30">
+                        Get Started
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center pt-20 overflow-hidden bg-cream">
+        <!-- Background Elements -->
+        <div class="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-secondary/20 to-transparent"></div>
+        <div class="absolute bottom-0 left-0 w-96 h-96 bg-accent/10 rounded-full blur-3xl animate-float"></div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 py-20">
+            <div class="text-center max-w-4xl mx-auto">
+                <div class="inline-flex items-center space-x-2 glass px-4 py-2 rounded-full mb-6 reveal">
+                    <span class="w-2 h-2 bg-accent rounded-full animate-pulse"></span>
+                    <span class="text-sm text-primary font-medium">AI-Powered Travel Planning</span>
+                </div>
+
+                <h1 class="text-5xl md:text-7xl font-bold mb-6 leading-tight reveal" style="transition-delay: 0.1s;">
+                    Discover Your Next<br>
+                    <span class="text-gradient">Great Adventure</span>
+                </h1>
+
+                <p class="text-xl text-gray-600 mb-10 max-w-2xl mx-auto reveal" style="transition-delay: 0.2s;">
+                    Sustainable travel meets intelligent planning. Let our AI curate the perfect eco-friendly journey tailored just for you.
+                </p>
+
+                <!-- Search Box -->
+                <div class="bg-white rounded-3xl shadow-2xl p-4 max-w-4xl mx-auto reveal" style="transition-delay: 0.3s;">
+                    <div class="flex flex-col md:flex-row gap-3">
+                        <div class="flex-1 relative group">
+                            <div class="absolute inset-y-0 left-4 flex items-center pointer-events-none">
+                                <i data-lucide="map-pin" class="w-5 h-5 text-primary"></i>
+                            </div>
+                            <input type="text" placeholder="Where to?" class="w-full bg-cream/50 border border-secondary/30 rounded-2xl py-4 pl-12 pr-4 text-gray-800 placeholder-gray-400 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" id="destinationInput">
+                        </div>
+                        <div class="flex-1 relative group">
+                            <div class="absolute inset-y-0 left-4 flex items-center pointer-events-none">
+                                <i data-lucide="calendar" class="w-5 h-5 text-primary"></i>
+                            </div>
+                            <input type="text" placeholder="Dates" onfocus="(this.type='date')" class="w-full bg-cream/50 border border-secondary/30 rounded-2xl py-4 pl-12 pr-4 text-gray-800 placeholder-gray-400 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all">
+                        </div>
+                        <div class="flex-1 relative group">
+                            <div class="absolute inset-y-0 left-4 flex items-center pointer-events-none">
+                                <i data-lucide="users" class="w-5 h-5 text-primary"></i>
+                            </div>
+                            <select class="w-full bg-cream/50 border border-secondary/30 rounded-2xl py-4 pl-12 pr-4 text-gray-800 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all appearance-none cursor-pointer">
+                                <option>2 Guests</option>
+                                <option>1 Guest</option>
+                                <option>3-5 Guests</option>
+                                <option>6+ Guests</option>
+                            </select>
+                        </div>
+                        <button onclick="searchDeals()" class="bg-primary hover:bg-opacity-90 text-white px-8 py-4 rounded-2xl font-semibold transition-all transform hover:scale-105 flex items-center justify-center space-x-2 shadow-lg hover:shadow-primary/30">
+                            <i data-lucide="search" class="w-5 h-5"></i>
+                            <span>Search</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- AI Mode Toggle -->
+                <div class="mt-8 flex justify-center items-center gap-4 reveal" style="transition-delay: 0.4s;">
+                    <span class="text-gray-600 font-medium">Travel Mode:</span>
+                    <div class="mode-toggle flex relative">
+                        <div class="mode-toggle-indicator w-1/2 h-full top-1 bottom-1 left-1" id="modeIndicator" style="width: calc(50% - 4px);"></div>
+                        <button onclick="setMode('leisure')" class="relative z-10 px-6 py-2 rounded-full font-medium transition-colors flex items-center gap-2 text-white" id="leisureBtn">
+                            <i data-lucide="umbrella" class="w-4 h-4"></i>
+                            <span>Leisure</span>
+                        </button>
+                        <button onclick="setMode('business')" class="relative z-10 px-6 py-2 rounded-full font-medium transition-colors flex items-center gap-2 text-primary" id="businessBtn">
+                            <i data-lucide="briefcase" class="w-4 h-4"></i>
+                            <span>Business</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Recommendations Section -->
+    <section class="py-20 bg-white" id="recommendations">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-end mb-12">
+                <div class="reveal">
+                    <span class="text-primary font-medium tracking-wider uppercase text-sm">Curated For You</span>
+                    <h2 class="text-4xl font-bold text-gray-900 mt-2">AI-Recommended Stays</h2>
+                    <p class="text-gray-600 mt-2" id="recSubtitle">Personalized leisure experiences based on your preferences</p>
+                </div>
+                <div class="flex gap-2">
+                    <button onclick="scrollCards('left')" class="p-3 rounded-full border border-secondary hover:bg-secondary/20 transition-colors">
+                        <i data-lucide="arrow-left" class="w-5 h-5 text-primary"></i>
+                    </button>
+                    <button onclick="scrollCards('right')" class="p-3 rounded-full border border-secondary hover:bg-secondary/20 transition-colors">
+                        <i data-lucide="arrow-right" class="w-5 h-5 text-primary"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="flex gap-6 overflow-x-auto pb-8 snap-x snap-mandatory scrollbar-hide" id="cardsContainer" style="scrollbar-width: none;">
+                <!-- Cards will be populated by JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Grid -->
+    <section class="py-20 bg-cream">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 reveal">
+                <span class="text-primary font-medium tracking-wider uppercase text-sm">Why Choose Us</span>
+                <h2 class="text-4xl font-bold text-gray-900 mt-2">Travel Smarter with AI</h2>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-white rounded-3xl p-8 card-lift reveal">
+                    <div class="w-14 h-14 bg-gradient-to-br from-primary to-accent rounded-2xl flex items-center justify-center mb-6 text-white">
+                        <i data-lucide="brain" class="w-7 h-7"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-gray-900">Smart Matching</h3>
+                    <p class="text-gray-600 leading-relaxed">Our AI analyzes 200+ data points to find accommodations that match your exact preferences and travel style.</p>
+                </div>
+
+                <div class="bg-white rounded-3xl p-8 card-lift reveal" style="transition-delay: 0.1s;">
+                    <div class="w-14 h-14 bg-gradient-to-br from-accent to-secondary rounded-2xl flex items-center justify-center mb-6 text-white">
+                        <i data-lucide="leaf" class="w-7 h-7"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-gray-900">Eco-Certified</h3>
+                    <p class="text-gray-600 leading-relaxed">Every property is vetted for sustainability. Track your carbon savings and environmental impact.</p>
+                </div>
+
+                <div class="bg-white rounded-3xl p-8 card-lift reveal" style="transition-delay: 0.2s;">
+                    <div class="w-14 h-14 bg-gradient-to-br from-secondary to-primary rounded-2xl flex items-center justify-center mb-6 text-white">
+                        <i data-lucide="zap" class="w-7 h-7"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-gray-900">Instant Booking</h3>
+                    <p class="text-gray-600 leading-relaxed">AI-powered price prediction ensures you book at the optimal time for the best rates guaranteed.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="py-20 bg-primary text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                <div class="reveal">
+                    <div class="text-4xl md:text-5xl font-bold mb-2" id="stat1">0</div>
+                    <div class="text-secondary text-sm uppercase tracking-wider">Properties</div>
+                </div>
+                <div class="reveal" style="transition-delay: 0.1s;">
+                    <div class="text-4xl md:text-5xl font-bold mb-2" id="stat2">0</div>
+                    <div class="text-secondary text-sm uppercase tracking-wider">Happy Travelers</div>
+                </div>
+                <div class="reveal" style="transition-delay: 0.2s;">
+                    <div class="text-4xl md:text-5xl font-bold mb-2" id="stat3">0</div>
+                    <div class="text-secondary text-sm uppercase tracking-wider">Countries</div>
+                </div>
+                <div class="reveal" style="transition-delay: 0.3s;">
+                    <div class="text-4xl md:text-5xl font-bold mb-2" id="stat4">0</div>
+                    <div class="text-secondary text-sm uppercase tracking-wider">Trees Planted</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Chat Widget Button -->
+    <button onclick="toggleChat()" id="chatButton" class="fixed bottom-8 right-8 w-16 h-16 bg-gradient-to-r from-primary to-accent text-white rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-transform z-50 group animate-pulse-glow">
+        <i data-lucide="message-circle" class="w-7 h-7 group-hover:rotate-12 transition-transform"></i>
+        <span class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full flex items-center justify-center text-xs font-bold border-2 border-white">1</span>
+    </button>
+
+    <!-- Chat Widget -->
+    <div id="chatWidget" class="chat-widget">
+        <!-- Header -->
+        <div class="bg-gradient-to-r from-primary to-accent p-4 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
+                    <i data-lucide="bot" class="w-5 h-5 text-white"></i>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white">Vera (AI Assistant)</h4>
+                    <div class="flex items-center space-x-1">
+                        <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+                        <span class="text-xs text-white/80">Online now</span>
+                    </div>
+                </div>
+            </div>
+            <button onclick="toggleChat()" class="w-8 h-8 hover:bg-white/10 rounded-full flex items-center justify-center transition-colors">
+                <i data-lucide="x" class="w-5 h-5 text-white"></i>
+            </button>
+        </div>
+
+        <!-- Messages -->
+        <div class="chat-messages" id="chatMessages">
+            <div class="message bot">
+                <div class="bubble">
+                    👋 Hi! I'm Vera, your AI travel assistant. I can help you find eco-friendly stays, compare prices, or plan your perfect trip. What are you looking for?
+                </div>
+            </div>
+        </div>
+
+        <!-- Suggestion Chips -->
+        <div class="suggestion-chips">
+            <button class="suggestion-chip" onclick="sendQuickMessage('Find hotels in Bali')">🏝️ Bali Hotels</button>
+            <button class="suggestion-chip" onclick="sendQuickMessage('What are the prices?')">💰 Prices</button>
+            <button class="suggestion-chip" onclick="sendQuickMessage('Eco-friendly options')">🌱 Eco Stays</button>
+            <button class="suggestion-chip" onclick="sendQuickMessage('Book a consultation')">📞 Book Call</button>
+        </div>
+
+        <!-- Input -->
+        <div class="p-4 bg-white border-t border-secondary/30">
+            <form onsubmit="event.preventDefault(); handleChatSubmit();" class="flex gap-2">
+                <input 
+                    type="text" 
+                    id="chatInput" 
+                    placeholder="Type your message..." 
+                    class="flex-1 bg-cream border border-secondary/50 rounded-full px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                    autocomplete="off"
+                >
+                <button 
+                    type="submit" 
+                    class="w-12 h-12 bg-primary hover:bg-opacity-90 text-white rounded-full flex items-center justify-center transition-all transform hover:scale-105 shadow-lg"
+                >
+                    <i data-lucide="send" class="w-5 h-5"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-12 mb-12">
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <div class="w-10 h-10 bg-gradient-to-br from-primary to-accent rounded-xl flex items-center justify-center">
+                            <i data-lucide="compass" class="w-6 h-6 text-white"></i>
+                        </div>
+                        <span class="text-xl font-bold">Verdant Voyages</span>
+                    </div>
+                    <p class="text-gray-400 text-sm leading-relaxed">AI-powered sustainable travel booking. Discover eco-friendly stays and adventures worldwide.</p>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold mb-4">Company</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-accent transition-colors">About Us</a></li>
+                        <li><a href="#" class="hover:text-accent transition-colors">Careers</a></li>
+                        <li><a href="#" class="hover:text-accent transition-colors">Press</a></li>
+                        <li><a href="#" class="hover:text-accent transition-colors">Blog</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold mb-4">Support</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-accent transition-colors">Help Center</a></li>
+                        <li><a href="#" class="hover:text-accent transition-colors">Safety Information</a></li>
+                        <li><a href="#" class="hover:text-accent transition-colors">Cancellation Options</a></li>
+                        <li><a href="#" class="hover:text-accent transition-colors">Report Issue</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold mb-4">Newsletter</h4>
+                    <p class="text-gray-400 text-sm mb-4">Get travel deals and eco-tips delivered to your inbox.</p>
+                    <div class="flex">
+                        <input type="email" placeholder="Enter email" class="flex-1 bg-gray-800 border border-gray-700 rounded-l-lg px-4 py-2 text-sm focus:outline-none focus:border-primary">
+                        <button class="bg-primary hover:bg-opacity-90 px-4 py-2 rounded-r-lg transition-colors">
+                            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-500 text-sm">© 2026 Verdant Voyages. All rights reserved.</p>
+                <div class="flex space-x-6 mt-4 md:mt-0">
+                    <a href="#" class="text-gray-400 hover:text-accent transition-colors"><i data-lucide="twitter" class="w-5 h-5"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-accent transition-colors"><i data-lucide="instagram" class="w-5 h-5"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-accent transition-colors"><i data-lucide="facebook" class="w-5 h-5"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Data
+        const leisureData = [
+            {
+                title: "Eco-Luxury Treehouse",
+                location: "Costa Rica",
+                image: "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800&q=80",
+                rating: 4.9,
+                reviews: 234,
+                price: "$180",
+                aiMatch: "98% Match",
+                tags: ["Jungle View", "Sustainable", "Pool"],
+                ecoScore: "A+"
+            },
+            {
+                title: "Bamboo Villa Resort",
+                location: "Bali, Indonesia",
+                image: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800&q=80",
+                rating: 4.8,
+                reviews: 567,
+                price: "$145",
+                aiMatch: "95% Match",
+                tags: ["Rice Terrace", "Spa", "Organic Food"],
+                ecoScore: "A"
+            },
+            {
+                title: "Glass Igloo Suite",
+                location: "Finland",
+                image: "https://images.unsplash.com/photo-1531366936337-7c912a4589a7?w=800&q=80",
+                rating: 5.0,
+                reviews: 189,
+                price: "$320",
+                aiMatch: "92% Match",
+                tags: ["Northern Lights", "Arctic", "Luxury"],
+                ecoScore: "A+"
+            },
+            {
+                title: "Overwater Eco-Bungalow",
+                location: "Maldives",
+                image: "https://images.unsplash.com/photo-1573843981267-be1999ff37cd?w=800&q=80",
+                rating: 4.9,
+                reviews: 423,
+                price: "$450",
+                aiMatch: "97% Match",
+                tags: ["Ocean View", "Marine Conservation", "Private"],
+                ecoScore: "A"
+            },
+            {
+                title: "Mountain Retreat Lodge",
+                location: "Swiss Alps",
+                image: "https://images.unsplash.com/photo-1518732714860-b62714ce0c59?w=800&q=80",
+                rating: 4.7,
+                reviews: 312,
+                price: "$280",
+                aiMatch: "94% Match",
+                tags: ["Hiking", "Skiing", "Local Cuisine"],
+                ecoScore: "A+"
+            }
+        ];
+
+        const businessData = [
+            {
+                title: "Green Business Hotel",
+                location: "Singapore",
+                image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&q=80",
+                rating: 4.8,
+                reviews: 892,
+                price: "$220",
+                aiMatch: "99% Match",
+                tags: ["Conference", "High-Speed WiFi", "Central"],
+                ecoScore: "A"
+            },
+            {
+                title: "Executive Eco-Suite",
+                location: "Copenhagen",
+                image: "https://images.unsplash.com/photo-1582719508461-905c673771fd?w=800&q=80",
+                rating: 4.9,
+                reviews: 445,
+                price: "$195",
+                aiMatch: "96% Match",
+                tags: ["Sustainable", "Meeting Rooms", "Bike Rental"],
+                ecoScore: "A+"
+            },
+            {
+                title: "Smart Business Center",
+                location: "Amsterdam",
+                image: "https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=800&q=80",
+                rating: 4.7,
+                reviews: 623,
+                price: "$165",
+                aiMatch: "93% Match",
+                tags: ["Co-working", "Canal View", "Green Certified"],
+                ecoScore: "A"
+            },
+            {
+                title: "Executive Airport Hotel",
+                location: "Zurich",
+                image: "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=800&q=80",
+                rating: 4.6,
+                reviews: 334,
+                price: "$240",
+                aiMatch: "91% Match",
+                tags: ["Transit", "Quiet Zone", "Express Check-in"],
+                ecoScore: "A"
+            },
+            {
+                title: "Downtown Green Stay",
+                location: "Vancouver",
+                image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&q=80",
+                rating: 4.8,
+                reviews: 556,
+                price: "$185",
+                aiMatch: "95% Match",
+                tags: ["Walkable", "EV Charging", "Carbon Neutral"],
+                ecoScore: "A+"
+            }
+        ];
+
+        let currentMode = 'leisure';
+        let chatOpen = false;
+        let isTyping = false;
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            renderCards();
+            animateStats();
+            initScrollReveal();
+            
+            // Navbar scroll effect
+            window.addEventListener('scroll', () => {
+                const navbar = document.getElementById('navbar');
+                if (window.scrollY > 50) {
+                    navbar.classList.add('glass', 'shadow-lg');
+                } else {
+                    navbar.classList.remove('glass', 'shadow-lg');
+                }
+            });
+        });
+
+        // Mode Toggle
+        function setMode(mode) {
+            currentMode = mode;
+            const indicator = document.getElementById('modeIndicator');
+            const leisureBtn = document.getElementById('leisureBtn');
+            const businessBtn = document.getElementById('businessBtn');
+            const subtitle = document.getElementById('recSubtitle');
+            
+            if (mode === 'leisure') {
+                indicator.style.left = '4px';
+                leisureBtn.classList.remove('text-primary');
+                leisureBtn.classList.add('text-white');
+                businessBtn.classList.remove('text-white');
+                businessBtn.classList.add('text-primary');
+                subtitle.textContent = 'Personalized leisure experiences based on your preferences';
+            } else {
+                indicator.style.left = 'calc(50% + 0px)';
+                leisureBtn.classList.remove('text-white');
+                leisureBtn.classList.add('text-primary');
+                businessBtn.classList.remove('text-primary');
+                businessBtn.classList.add('text-white');
+                subtitle.textContent = 'Optimized business travel with productivity-focused amenities';
+            }
+            
+            // Animate transition
+            const container = document.getElementById('cardsContainer');
+            container.style.opacity = '0';
+            setTimeout(() => {
+                renderCards();
+                container.style.opacity = '1';
+            }, 300);
+        }
+
+        // Render Cards
+        function renderCards() {
+            const container = document.getElementById('cardsContainer');
+            const data = currentMode === 'leisure' ? leisureData : businessData;
+            
+            container.innerHTML = data.map((item, index) => `
+                <div class="min-w-[350px] bg-white rounded-3xl overflow-hidden card-lift snap-center border border-secondary/20" style="animation: slide-up 0.6s ease-out ${index * 0.1}s forwards; opacity: 0;">
+                    <div class="relative h-56 overflow-hidden">
+                        <img src="${item.image}" alt="${item.title}" class="w-full h-full object-cover">
+                        <div class="absolute top-4 left-4 badge-ai">
+                            ${item.aiMatch}
+                        </div>
+                        <div class="absolute top-4 right-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-xs font-bold text-primary flex items-center gap-1">
+                            <i data-lucide="leaf" class="w-3 h-3"></i>
+                            ${item.ecoScore}
+                        </div>
+                        <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4">
+                            <div class="flex items-center text-white gap-1">
+                                <i data-lucide="star" class="w-4 h-4 fill-yellow-400 text-yellow-400"></i>
+                                <span class="font-bold">${item.rating}</span>
+                                <span class="text-white/80 text-sm">(${item.reviews})</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-2">
+                            <div>
+                                <h3 class="text-xl font-bold text-gray-900">${item.title}</h3>
+                                <p class="text-gray-500 text-sm flex items-center gap-1 mt-1">
+                                    <i data-lucide="map-pin" class="w-4 h-4 text-primary"></i>
+                                    ${item.location}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap gap-2 my-3">
+                            ${item.tags.map(tag => `<span class="text-xs bg-cream text-primary px-3 py-1 rounded-full font-medium border border-secondary/30">${tag}</span>`).join('')}
+                        </div>
+                        <div class="flex justify-between items-center pt-4 border-t border-gray-100">
+                            <div>
+                                <span class="text-2xl font-bold text-primary">${item.price}</span>
+                                <span class="text-gray-400 text-sm">/night</span>
+                            </div>
+                            <button class="bg-primary hover:bg-opacity-90 text-white px-6 py-2.5 rounded-full font-medium transition-all transform hover:scale-105 shadow-lg hover:shadow-primary/30 flex items-center gap-2">
+                                <span>Book</span>
+                                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            
+            lucide.createIcons();
+        }
+
+        // Scroll Cards
+        function scrollCards(direction) {
+            const container = document.getElementById('cardsContainer');
+            container.scrollBy({ left: direction === 'left' ? -400 : 400, behavior: 'smooth' });
+        }
+
+        // Search
+        function searchDeals() {
+            const input = document.getElementById('destinationInput');
+            if (input.value) {
+                document.getElementById('recommendations').scrollIntoView({ behavior: 'smooth' });
+                // Simulate search with loading
+                const btn = document.querySelector('button[onclick="searchDeals()"]');
+                const original = btn.innerHTML;
+                btn.innerHTML = '<div class="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>';
+                setTimeout(() => {
+                    btn.innerHTML = original;
+                    lucide.createIcons();
+                }, 1000);
+            } else {
+                input.focus();
+                input.classList.add('ring-2', 'ring-primary');
+                setTimeout(() => input.classList.remove('ring-2', 'ring-primary'), 1000);
+            }
+        }
+
+        // Chat Functions
+        function toggleChat() {
+            const widget = document.getElementById('chatWidget');
+            const button = document.getElementById('chatButton');
+            chatOpen = !chatOpen;
+            
+            if (chatOpen) {
+                widget.classList.add('open');
+                button.style.transform = 'scale(0)';
+                setTimeout(() => {
+                    button.style.display = 'none';
+                    document.getElementById('chatInput').focus();
+                }, 300);
+            } else {
+                widget.classList.remove('open');
+                button.style.display = 'flex';
+                setTimeout(() => button.style.transform = 'scale(1)', 10);
+            }
+        }
+
+        function handleChatSubmit() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            if (message && !isTyping) {
+                addUserMessage(message);
+                input.value = '';
+                showTyping();
+                setTimeout(() => {
+                    removeTyping();
+                    addBotMessage(getAIResponse(message));
+                }, 1500);
+            }
+        }
+
+        function sendQuickMessage(message) {
+            if (!isTyping) {
+                addUserMessage(message);
+                showTyping();
+                setTimeout(() => {
+                    removeTyping();
+                    addBotMessage(getAIResponse(message));
+                }, 1200);
+            }
+        }
+
+        function addUserMessage(text) {
+            const div = document.getElementById('chatMessages');
+            const time = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+            div.innerHTML += `
+                <div class="message user">
+                    <div class="bubble">${escapeHtml(text)}</div>
+                    <span class="text-xs text-gray-400 mt-1 block text-right">${time}</span>
+                </div>
+            `;
+            div.scrollTop = div.scrollHeight;
+        }
+
+        function addBotMessage(text) {
+            const div = document.getElementById('chatMessages');
+            const time = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+            div.innerHTML += `
+                <div class="message bot">
+                    <div class="bubble">${text}</div>
+                    <span class="text-xs text-gray-400 mt-1 block">${time}</span>
+                </div>
+            `;
+            div.scrollTop = div.scrollHeight;
+        }
+
+        function showTyping() {
+            isTyping = true;
+            const div = document.getElementById('chatMessages');
+            div.innerHTML += `
+                <div class="message bot" id="typing">
+                    <div class="typing-indicator"><span></span><span></span><span></span></div>
+                </div>
+            `;
+            div.scrollTop = div.scrollHeight;
+        }
+
+        function removeTyping() {
+            isTyping = false;
+            const el = document.getElementById('typing');
+            if (el) el.remove();
+        }
+
+        function getAIResponse(input) {
+            const lower = input.toLowerCase();
+            
+            if (lower.includes('price') || lower.includes('cost') || lower.includes('how much')) {
+                return "Our eco-friendly stays range from <strong>$145-$450/night</strong> depending on location and amenities. 🌿<br><br>Current deals:<br>• Bali Bamboo Villa: <strong>$145/night</strong> (30% off)<br>• Costa Rica Treehouse: <strong>$180/night</strong><br>• Maldives Bungalow: <strong>$450/night</strong> with free transfers<br><br>All prices include carbon offset fees. Want me to check specific dates?";
+            }
+            
+            if (lower.includes('bali') || lower.includes('hotel')) {
+                return "Great choice! 🏝️ I found 12 eco-certified properties in Bali. The <strong>Bamboo Villa Resort</strong> is our top pick - 95% match for your preferences.<br><br>Features:<br>• Organic farm-to-table dining<br>• Rice terrace views<br>• Zero-waste policy<br>• $145/night<br><br>Shall I check availability for your dates?";
+            }
+            
+            if (lower.includes('eco') || lower.includes('green') || lower.includes('sustainable')) {
+                return "We specialize in eco-certified accommodations! 🌱<br><br>Every property is rated A to A+ for:<br>• Renewable energy use<br>• Water conservation<br>• Local community support<br>• Waste reduction<br><br>Would you like to see only A+ rated stays?";
+            }
+            
+            if (lower.includes('book') || lower.includes('call') || lower.includes('consultation')) {
+                return "I'd love to help you plan! 📞<br><br>Our travel experts are available:<br>• <strong>Tomorrow 9:00 AM</strong><br>• Tomorrow 2:00 PM<br>• Friday 10:00 AM<br><br>Free 30-minute consultation includes personalized itinerary planning. Which time works for you?";
+            }
+            
+            if (lower.includes('hello') || lower.includes('hi')) {
+                return "Hello! 👋 Ready to plan an amazing eco-friendly trip? I can help you:<br><br>• Find sustainable stays<br>• Compare prices<br>• Check availability<br>• Plan your itinerary<br><br>Where would you like to go?";
+            }
+            
+            return "That's exciting! 🌍 Based on current trends, I'd recommend <strong>Costa Rica</strong> - it has incredible biodiversity and our treehouse properties have 98% guest satisfaction.<br><br>Would you like me to show you available dates or compare it with similar destinations like Bali or Thailand?";
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Stats Animation
+        function animateStats() {
+            const stats = [
+                { id: 'stat1', target: 50000, suffix: '+' },
+                { id: 'stat2', target: 2.5, suffix: 'M', decimals: 1 },
+                { id: 'stat3', target: 120, suffix: '+' },
+                { id: 'stat4', target: 5, suffix: 'M', decimals: 1 }
+            ];
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        stats.forEach(stat => {
+                            const el = document.getElementById(stat.id);
+                            let current = 0;
+                            const increment = stat.target / 50;
+                            const timer = setInterval(() => {
+                                current += increment;
+                                if (current >= stat.target) {
+                                    const val = stat.decimals ? stat.target.toFixed(stat.decimals) : Math.floor(stat.target);
+                                    el.textContent = val.toLocaleString() + stat.suffix;
+                                    clearInterval(timer);
+                                } else {
+                                    const val = stat.decimals ? current.toFixed(stat.decimals) : Math.floor(current);
+                                    el.textContent = val.toLocaleString() + stat.suffix;
+                                }
+                            }, 30);
+                        });
+                        observer.disconnect();
+                    }
+                });
+            });
+            
+            observer.observe(document.getElementById('stat1'));
+        }
+
+        // Scroll Reveal
+        function initScrollReveal() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+        }
+
+        // Auto-open chat after 6 seconds
+        setTimeout(() => {
+            if (!chatOpen) {
+                document.getElementById('chatButton').classList.add('animate-bounce');
+                setTimeout(() => document.getElementById('chatButton').classList.remove('animate-bounce'), 2000);
+            }
+        }, 6000);
+    </script>
+</body>
+</html>

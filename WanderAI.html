@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WanderAI - Discover Your Next Journey</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            dark: '#1B4332',
+                            primary: '#2D5A4A',
+                            sage: '#A4B5A0',
+                            accent: '#4ECDC4',
+                            light: '#F7F8F0',
+                            cream: '#FEFDF5'
+                        }
+                    },
+                    fontFamily: {
+                        heading: ['Poppins', 'sans-serif'],
+                        body: ['Inter', 'sans-serif']
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'fade-in-up': 'fadeInUp 0.8s ease-out forwards',
+                        'slide-in': 'slideIn 0.6s ease-out forwards',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(30px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        slideIn: {
+                            '0%': { opacity: '0', transform: 'translateX(-30px)' },
+                            '100%': { opacity: '1', transform: 'translateX(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .mode-business {
+            --mode-primary: #1e3a8a;
+            --mode-accent: #3b82f6;
+            --mode-bg: #eff6ff;
+        }
+        
+        .mode-leisure {
+            --mode-primary: #2D5A4A;
+            --mode-accent: #4ECDC4;
+            --mode-bg: #F7F8F0;
+        }
+        
+        .parallax-layer {
+            will-change: transform;
+        }
+        
+        .text-gradient {
+            background: linear-gradient(135deg, #2D5A4A 0%, #4ECDC4 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .card-hover {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+        
+        .mode-indicator {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .mode-business-active {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+        }
+        
+        .mode-leisure-active {
+            background: linear-gradient(135deg, #2D5A4A 0%, #4ECDC4 100%);
+        }
+        
+        .typing-cursor::after {
+            content: '|';
+            animation: blink 1s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+        
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+        
+        .scroll-reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .activity-card {
+            transition: all 0.3s ease;
+        }
+        
+        .activity-card:hover .activity-image {
+            transform: scale(1.1);
+        }
+        
+        .activity-image {
+            transition: transform 0.6s ease;
+        }
+        
+        .ai-bubble {
+            animation: messagePop 0.3s ease-out;
+        }
+        
+        @keyframes messagePop {
+            0% { opacity: 0; transform: scale(0.8) translateY(10px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        
+        .floating-element {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .floating-element:nth-child(2) { animation-delay: 1s; }
+        .floating-element:nth-child(3) { animation-delay: 2s; }
+        
+        .gradient-border {
+            position: relative;
+            background: linear-gradient(135deg, #F7F8F0 0%, #ffffff 100%);
+        }
+        
+        .gradient-border::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            background: linear-gradient(135deg, #2D5A4A, #4ECDC4, #A4B5A0);
+            border-radius: inherit;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .gradient-border:hover::before {
+            opacity: 1;
+        }
+        
+        .search-glow:focus-within {
+            box-shadow: 0 0 0 4px rgba(78, 205, 196, 0.2), 0 20px 40px -10px rgba(0,0,0,0.1);
+        }
+        
+        .image-mask {
+            mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+        }
+    </style>
+</head>
+<body class="font-body bg-brand-cream text-gray-800 antialiased overflow-x-hidden">
+
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed top-0 w-full z-50 transition-all duration-500">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex items-center gap-2">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-primary to-brand-accent flex items-center justify-center text-white font-bold text-xl">
+                        W
+                    </div>
+                    <span class="font-heading font-bold text-2xl text-brand-dark tracking-tight">WanderAI</span>
+                </div>
+                
+                <div class="hidden md:flex items-center gap-8">
+                    <a href="#" class="text-gray-700 hover:text-brand-primary font-medium transition-colors">Destinations</a>
+                    <a href="#" class="text-gray-700 hover:text-brand-primary font-medium transition-colors">Activities</a>
+                    <a href="#" class="text-gray-700 hover:text-brand-primary font-medium transition-colors">Business Travel</a>
+                    <a href="#" class="text-gray-700 hover:text-brand-primary font-medium transition-colors">Deals</a>
+                </div>
+                
+                <div class="flex items-center gap-4">
+                    <button onclick="toggleAIChat()" class="flex items-center gap-2 px-4 py-2 rounded-full bg-brand-light text-brand-primary font-medium hover:bg-brand-sage transition-all">
+                        <i data-lucide="sparkles" class="w-4 h-4"></i>
+                        <span class="hidden sm:inline">AI Planner</span>
+                    </button>
+                    <button class="px-6 py-2.5 rounded-full bg-brand-primary text-white font-medium hover:bg-brand-dark transition-all shadow-lg hover:shadow-xl">
+                        Sign In
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section with Parallax -->
+    <section class="relative min-h-screen flex items-center justify-center overflow-hidden">
+        <!-- Parallax Background Layers -->
+        <div class="absolute inset-0 z-0">
+            <div class="parallax-layer absolute inset-0 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&q=80'); transform: translateZ(-1px) scale(1.5);"></div>
+            <div class="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-brand-cream"></div>
+        </div>
+        
+        <!-- Floating Elements -->
+        <div class="absolute inset-0 z-10 pointer-events-none overflow-hidden">
+            <div class="floating-element absolute top-1/4 left-10 w-64 h-64 bg-brand-accent/20 rounded-full blur-3xl"></div>
+            <div class="floating-element absolute bottom-1/4 right-10 w-96 h-96 bg-brand-primary/20 rounded-full blur-3xl"></div>
+        </div>
+        
+        <!-- Hero Content -->
+        <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-20">
+            <div class="animate-fade-in-up">
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-effect text-white mb-6">
+                    <span class="flex h-2 w-2 rounded-full bg-brand-accent animate-pulse"></span>
+                    <span class="text-sm font-medium">AI-Powered Travel Planning</span>
+                </div>
+                
+                <h1 class="font-heading text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-6 leading-tight">
+                    Where will your<br>
+                    <span class="text-brand-accent typing-cursor" id="typewriter">curiosity</span>
+                    <span class="text-white">take you?</span>
+                </h1>
+                
+                <p class="text-xl md:text-2xl text-white/90 mb-12 max-w-3xl mx-auto font-light">
+                    Discover personalized experiences powered by AI. Whether you're closing deals or chasing sunsets, we curate journeys that matter.
+                </p>
+            </div>
+            
+            <!-- Mode Toggle -->
+            <div class="flex justify-center mb-12 animate-fade-in-up" style="animation-delay: 0.2s">
+                <div class="glass-effect rounded-full p-1.5 flex gap-1">
+                    <button onclick="setMode('leisure')" id="btn-leisure" class="mode-indicator mode-leisure-active px-8 py-3 rounded-full text-white font-medium transition-all flex items-center gap-2">
+                        <i data-lucide="palmtree" class="w-5 h-5"></i>
+                        Leisure
+                    </button>
+                    <button onclick="setMode('business')" id="btn-business" class="mode-indicator px-8 py-3 rounded-full text-white/80 font-medium transition-all flex items-center gap-2 hover:text-white">
+                        <i data-lucide="briefcase" class="w-5 h-5"></i>
+                        Business
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Search Bar -->
+            <div class="max-w-4xl mx-auto animate-fade-in-up" style="animation-delay: 0.4s">
+                <div class="glass-card rounded-3xl p-2 shadow-2xl search-glow transition-all">
+                    <div class="flex flex-col md:flex-row gap-2">
+                        <div class="flex-1 flex items-center gap-3 px-6 py-4 bg-white/50 rounded-2xl">
+                            <i data-lucide="map-pin" class="w-5 h-5 text-brand-primary"></i>
+                            <input type="text" placeholder="Where to?" class="w-full bg-transparent outline-none text-gray-800 placeholder-gray-500 font-medium" id="destination-input">
+                        </div>
+                        <div class="flex-1 flex items-center gap-3 px-6 py-4 bg-white/50 rounded-2xl">
+                            <i data-lucide="calendar" class="w-5 h-5 text-brand-primary"></i>
+                            <input type="text" placeholder="Add dates" class="w-full bg-transparent outline-none text-gray-800 placeholder-gray-500 font-medium" onfocus="(this.type='date')">
+                        </div>
+                        <div class="flex-1 flex items-center gap-3 px-6 py-4 bg-white/50 rounded-2xl">
+                            <i data-lucide="users" class="w-5 h-5 text-brand-primary"></i>
+                            <select class="w-full bg-transparent outline-none text-gray-800 font-medium cursor-pointer">
+                                <option>1 traveler</option>
+                                <option>2 travelers</option>
+                                <option>Family</option>
+                                <option>Group</option>
+                            </select>
+                        </div>
+                        <button onclick="searchDestinations()" class="px-8 py-4 bg-brand-primary hover:bg-brand-dark text-white rounded-2xl font-semibold transition-all flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transform hover:scale-105">
+                            <i data-lucide="search" class="w-5 h-5"></i>
+                            <span>Explore</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Quick Stats -->
+            <div class="mt-12 flex justify-center gap-8 md:gap-16 text-white animate-fade-in-up" style="animation-delay: 0.6s">
+                <div class="text-center">
+                    <div class="text-3xl font-bold font-heading">2M+</div>
+                    <div class="text-sm opacity-80">Destinations</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold font-heading">500K+</div>
+                    <div class="text-sm opacity-80">Activities</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold font-heading">98%</div>
+                    <div class="text-sm opacity-80">Happy Travelers</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 animate-bounce">
+            <i data-lucide="chevron-down" class="w-8 h-8 text-white/60"></i>
+        </div>
+    </section>
+
+    <!-- AI Recommendations Section -->
+    <section class="py-20 bg-brand-cream relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-brand-sage/10 to-transparent"></div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="flex flex-col md:flex-row items-end justify-between mb-12 scroll-reveal">
+                <div>
+                    <div class="flex items-center gap-2 text-brand-primary font-semibold mb-2">
+                        <i data-lucide="sparkles" class="w-5 h-5"></i>
+                        <span>AI Curated For You</span>
+                    </div>
+                    <h2 class="font-heading text-4xl md:text-5xl font-bold text-brand-dark">
+                        Nearby Experiences
+                    </h2>
+                    <p class="text-gray-600 mt-2 text-lg" id="location-text">Discovering activities near your current location...</p>
+                </div>
+                
+                <div class="flex gap-2 mt-4 md:mt-0">
+                    <button onclick="filterActivities('all')" class="filter-btn active px-4 py-2 rounded-full text-sm font-medium transition-all bg-brand-primary text-white" data-filter="all">All</button>
+                    <button onclick="filterActivities('trending')" class="filter-btn px-4 py-2 rounded-full text-sm font-medium transition-all bg-white text-gray-600 hover:bg-brand-light" data-filter="trending">Trending</button>
+                    <button onclick="filterActivities('hidden')" class="filter-btn px-4 py-2 rounded-full text-sm font-medium transition-all bg-white text-gray-600 hover:bg-brand-light" data-filter="hidden">Hidden Gems</button>
+                </div>
+            </div>
+            
+            <!-- Activity Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" id="activities-grid">
+                <!-- Cards will be populated by JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Dream Destinations Section -->
+    <section class="py-24 bg-white relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 scroll-reveal">
+                <h2 class="font-heading text-5xl md:text-6xl font-bold text-brand-dark mb-6">
+                    Dream Destinations
+                </h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+                    Let our AI inspire your next adventure. From secluded beaches to bustling metropolises, find the place that calls to you.
+                </p>
+            </div>
+            
+            <!-- Masonry Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[300px]">
+                <div class="md:row-span-2 group relative overflow-hidden rounded-3xl cursor-pointer scroll-reveal card-hover" onclick="openDestination('bali')">
+                    <img src="https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=800&q=80" alt="Bali" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
+                    <div class="absolute bottom-0 left-0 p-8 text-white">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="px-3 py-1 rounded-full bg-brand-accent/20 backdrop-blur-sm text-xs font-medium border border-brand-accent/30">Trending</span>
+                            <span class="flex items-center gap-1 text-sm"><i data-lucide="star" class="w-4 h-4 fill-yellow-400 text-yellow-400"></i> 4.9</span>
+                        </div>
+                        <h3 class="font-heading text-3xl font-bold mb-1">Bali, Indonesia</h3>
+                        <p class="text-white/80">Tropical paradise & cultural heritage</p>
+                        <div class="mt-4 flex items-center gap-2 text-sm opacity-0 group-hover:opacity-100 transition-opacity">
+                            <span>Explore with AI</span>
+                            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="group relative overflow-hidden rounded-3xl cursor-pointer scroll-reveal card-hover" onclick="openDestination('tokyo')">
+                    <img src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=800&q=80" alt="Tokyo" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
+                    <div class="absolute bottom-0 left-0 p-6 text-white">
+                        <h3 class="font-heading text-2xl font-bold mb-1">Tokyo, Japan</h3>
+                        <p class="text-white/80 text-sm">Where tradition meets future</p>
+                    </div>
+                </div>
+                
+                <div class="group relative overflow-hidden rounded-3xl cursor-pointer scroll-reveal card-hover" onclick="openDestination('santorini')">
+                    <img src="https://images.unsplash.com/photo-1613395877344-13d4c280d288?w=800&q=80" alt="Santorini" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
+                    <div class="absolute bottom-0 left-0 p-6 text-white">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="px-3 py-1 rounded-full bg-white/20 backdrop-blur-sm text-xs font-medium">Romantic</span>
+                        </div>
+                        <h3 class="font-heading text-2xl font-bold mb-1">Santorini, Greece</h3>
+                        <p class="text-white/80 text-sm">Sunsets & white-washed beauty</p>
+                    </div>
+                </div>
+                
+                <div class="md:col-span-2 group relative overflow-hidden rounded-3xl cursor-pointer scroll-reveal card-hover" onclick="openDestination('iceland')">
+                    <img src="https://images.unsplash.com/photo-1476610182048-b716b8518aae?w=800&q=80" alt="Iceland" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
+                    <div class="absolute bottom-0 left-0 p-8 text-white">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="px-3 py-1 rounded-full bg-brand-primary/20 backdrop-blur-sm text-xs font-medium border border-brand-primary/30">Adventure</span>
+                        </div>
+                        <h3 class="font-heading text-3xl font-bold mb-1">Reykjavik, Iceland</h3>
+                        <p class="text-white/80">Northern lights & volcanic landscapes</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Features Showcase -->
+    <section class="py-24 bg-brand-light relative overflow-hidden">
+        <div class="absolute inset-0 opacity-30">
+            <div class="absolute top-0 left-1/4 w-96 h-96 bg-brand-accent/30 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-brand-sage/30 rounded-full blur-3xl"></div>
+        </div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid md:grid-cols-2 gap-16 items-center">
+                <div class="scroll-reveal">
+                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white text-brand-primary font-semibold mb-6 shadow-sm">
+                        <i data-lucide="bot" class="w-4 h-4"></i>
+                        <span>AI Travel Assistant</span>
+                    </div>
+                    <h2 class="font-heading text-4xl md:text-5xl font-bold text-brand-dark mb-6 leading-tight">
+                        Your Personal Travel<br>Concierge, Powered by AI
+                    </h2>
+                    <p class="text-lg text-gray-600 mb-8 leading-relaxed">
+                        From finding hidden local gems to optimizing your business trip schedule, our AI understands your preferences and crafts perfect itineraries in seconds.
+                    </p>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-start gap-4 p-4 rounded-2xl bg-white/60 hover:bg-white transition-colors cursor-pointer group">
+                            <div class="w-12 h-12 rounded-xl bg-brand-primary/10 flex items-center justify-center text-brand-primary group-hover:scale-110 transition-transform">
+                                <i data-lucide="compass" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-900 mb-1">Smart Discovery</h4>
+                                <p class="text-sm text-gray-600">Discovers activities based on your location, weather, and mood</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4 p-4 rounded-2xl bg-white/60 hover:bg-white transition-colors cursor-pointer group">
+                            <div class="w-12 h-12 rounded-xl bg-brand-accent/10 flex items-center justify-center text-brand-accent group-hover:scale-110 transition-transform">
+                                <i data-lucide="calendar-clock" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-900 mb-1">Intelligent Scheduling</h4>
+                                <p class="text-sm text-gray-600">Optimizes your itinerary considering travel time, crowds, and peak hours</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4 p-4 rounded-2xl bg-white/60 hover:bg-white transition-colors cursor-pointer group">
+                            <div class="w-12 h-12 rounded-xl bg-brand-sage/20 flex items-center justify-center text-brand-primary group-hover:scale-110 transition-transform">
+                                <i data-lucide="wallet" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-900 mb-1">Price Prediction</h4>
+                                <p class="text-sm text-gray-600">AI forecasts price drops and alerts you when to book</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="relative scroll-reveal">
+                    <div class="relative bg-white rounded-3xl shadow-2xl p-6 max-w-md mx-auto transform rotate-1 hover:rotate-0 transition-transform duration-500">
+                        <div class="flex items-center gap-3 mb-6 pb-4 border-b">
+                            <div class="w-10 h-10 rounded-full bg-gradient-to-br from-brand-primary to-brand-accent flex items-center justify-center text-white">
+                                <i data-lucide="sparkles" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <div class="font-semibold text-gray-900">WanderAI Assistant</div>
+                                <div class="text-xs text-green-500 flex items-center gap-1">
+                                    <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                                    Online now
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-4 mb-6">
+                            <div class="ai-bubble bg-gray-100 rounded-2xl rounded-tl-none p-4 text-sm text-gray-700 max-w-[85%]">
+                                Hi! I noticed you're in Singapore. Based on your preference for culinary experiences, I found 3 Michelin-starred hawker stalls within 2km of you! 🍜
+                            </div>
+                            
+                            <div class="ai-bubble bg-brand-primary text-white rounded-2xl rounded-tr-none p-4 text-sm max-w-[85%] ml-auto">
+                                That sounds perfect! Are they open now?
+                            </div>
+                            
+                            <div class="ai-bubble bg-gray-100 rounded-2xl rounded-tl-none p-4 text-sm text-gray-700 max-w-[85%]">
+                                Yes! Two are open until 10 PM. I've checked the queue times - Hill Street Tai Hwa Pork Noodle has a 15-min wait. Want me to book a grab there? 🚗
+                            </div>
+                        </div>
+                        
+                        <div class="flex gap-2">
+                            <input type="text" placeholder="Ask me anything..." class="flex-1 px-4 py-3 rounded-xl bg-gray-100 text-sm outline-none focus:ring-2 focus:ring-brand-primary/20">
+                            <button class="px-4 py-3 rounded-xl bg-brand-primary text-white hover:bg-brand-dark transition-colors">
+                                <i data-lucide="send" class="w-5 h-5"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Decorative Elements -->
+                    <div class="absolute -top-6 -right-6 w-24 h-24 bg-brand-accent/20 rounded-full blur-2xl"></div>
+                    <div class="absolute -bottom-6 -left-6 w-32 h-32 bg-brand-sage/20 rounded-full blur-2xl"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Business vs Leisure Comparison -->
+    <section class="py-24 bg-white" id="mode-showcase">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 scroll-reveal">
+                <h2 class="font-heading text-4xl md:text-5xl font-bold text-brand-dark mb-4">
+                    Two Modes, One Platform
+                </h2>
+                <p class="text-lg text-gray-600">Seamlessly switch between business efficiency and leisure exploration</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Leisure Mode Card -->
+                <div class="group relative overflow-hidden rounded-3xl bg-gradient-to-br from-brand-light to-white p-8 border border-brand-sage/30 hover:shadow-2xl transition-all duration-500 scroll-reveal">
+                    <div class="absolute top-0 right-0 w-64 h-64 bg-brand-accent/10 rounded-full blur-3xl group-hover:bg-brand-accent/20 transition-all"></div>
+                    
+                    <div class="relative z-10">
+                        <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-brand-primary to-brand-accent flex items-center justify-center text-white mb-6 group-hover:scale-110 transition-transform">
+                            <i data-lucide="palmtree" class="w-8 h-8"></i>
+                        </div>
+                        
+                        <h3 class="font-heading text-2xl font-bold text-brand-dark mb-3">Leisure Mode</h3>
+                        <p class="text-gray-600 mb-6">Discover hidden gems, local experiences, and adventures tailored to your interests.</p>
+                        
+                        <ul class="space-y-3 mb-8">
+                            <li class="flex items-center gap-3 text-gray-700">
+                                <i data-lucide="check-circle" class="w-5 h-5 text-brand-accent"></i>
+                                <span>Local food & cultural tours</span>
+                            </li>
+                            <li class="flex items-center gap-3 text-gray-700">
+                                <i data-lucide="check-circle" class="w-5 h-5 text-brand-accent"></i>
+                                <span>Scenic spots & photo ops</span>
+                            </li>
+                            <li class="flex items-center gap-3 text-gray-700">
+                                <i data-lucide="check-circle" class="w-5 h-5 text-brand-accent"></i>
+                                <span>Wellness & relaxation</span>
+                            </li>
+                        </ul>
+                        
+                        <button onclick="setMode('leisure')" class="w-full py-4 rounded-xl bg-brand-primary text-white font-semibold hover:bg-brand-dark transition-all flex items-center justify-center gap-2 group-hover:gap-3">
+                            <span>Switch to Leisure</span>
+                            <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Business Mode Card -->
+                <div class="group relative overflow-hidden rounded-3xl bg-gradient-to-br from-blue-50 to-white p-8 border border-blue-200 hover:shadow-2xl transition-all duration-500 scroll-reveal">
+                    <div class="absolute top-0 right-0 w-64 h-64 bg-blue-400/10 rounded-full blur-3xl group-hover:bg-blue-400/20 transition-all"></div>
+                    
+                    <div class="relative z-10">
+                        <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-900 to-blue-600 flex items-center justify-center text-white mb-6 group-hover:scale-110 transition-transform">
+                            <i data-lucide="briefcase" class="w-8 h-8"></i>
+                        </div>
+                        
+                        <h3 class="font-heading text-2xl font-bold text-blue-900 mb-3">Business Mode</h3>
+                        <p class="text-gray-600 mb-6">Optimize your corporate travel with efficient scheduling, meeting venues, and networking spots.</p>
+                        
+                        <ul class="space-y-3 mb-8">
+                            <li class="flex items-center gap-3 text-gray-700">
+                                <i data-lucide="check-circle" class="w-5 h-5 text-blue-600"></i>
+                                <span>Meeting rooms & coworking spaces</span>
+                            </li>
+                            <li class="flex items-center gap-3 text-gray-700">
+                                <i data-lucide="check-circle" class="w-5 h-5 text-blue-600"></i>
+                                <span>Business hotels with amenities</span>
+                            </li>
+                            <li class="flex items-center gap-3 text-gray-700">
+                                <i data-lucide="check-circle" class="w-5 h-5 text-blue-600"></i>
+                                <span>Networking events & restaurants</span>
+                            </li>
+                        </ul>
+                        
+                        <button onclick="setMode('business')" class="w-full py-4 rounded-xl bg-blue-900 text-white font-semibold hover:bg-blue-800 transition-all flex items-center justify-center gap-2 group-hover:gap-3">
+                            <span>Switch to Business</span>
+                            <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="py-24 bg-brand-dark relative overflow-hidden">
+        <div class="absolute inset-0 opacity-20">
+            <div class="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+        </div>
+        
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 scroll-reveal">
+            <h2 class="font-heading text-4xl md:text-5xl font-bold text-white mb-6">
+                Ready to explore smarter?
+            </h2>
+            <p class="text-xl text-white/80 mb-10">
+                Join 2 million+ travelers who plan their perfect trips with AI. Get personalized deals and hidden gems delivered to your inbox.
+            </p>
+            
+            <form class="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto" onsubmit="event.preventDefault(); alert('Welcome to WanderAI! Check your email for personalized recommendations.');">
+                <input type="email" placeholder="Enter your email" class="flex-1 px-6 py-4 rounded-full bg-white/10 border border-white/20 text-white placeholder-white/60 outline-none focus:bg-white/20 transition-all backdrop-blur-sm">
+                <button type="submit" class="px-8 py-4 rounded-full bg-brand-accent text-brand-dark font-bold hover:bg-white transition-all shadow-lg hover:shadow-xl transform hover:scale-105">
+                    Get Started
+                </button>
+            </form>
+            
+            <p class="text-sm text-white/50 mt-6">No spam, ever. Unsubscribe anytime.</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-brand-cream pt-16 pb-8 border-t border-brand-sage/20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
+                <div class="col-span-2 md:col-span-1">
+                    <div class="flex items-center gap-2 mb-4">
+                        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-primary to-brand-accent flex items-center justify-center text-white font-bold">W</div>
+                        <span class="font-heading font-bold text-xl text-brand-dark">WanderAI</span>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4">AI-powered travel planning for the modern explorer. Discover, book, and experience the world smarter.</p>
+                    <div class="flex gap-4">
+                        <a href="#" class="w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center text-gray-600 hover:text-brand-primary hover:shadow-md transition-all">
+                            <i data-lucide="instagram" class="w-5 h-5"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center text-gray-600 hover:text-brand-primary hover:shadow-md transition-all">
+                            <i data-lucide="twitter" class="w-5 h-5"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center text-gray-600 hover:text-brand-primary hover:shadow-md transition-all">
+                            <i data-lucide="facebook" class="w-5 h-5"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold text-gray-900 mb-4">Discover</h4>
+                    <ul class="space-y-2 text-sm text-gray-600">
+                        <li><a href="#" class="hover:text-brand-primary transition-colors">Destinations</a></li>
+                        <li><a href="#" class="hover:text-brand-primary transition-colors">Activities</a></li>
+                        <li><a href="#" class="hover:text-brand-primary transition-colors">Experiences</a></li>
+                        <li><a href="#" class="hover:text-brand-primary transition-colors">Deals</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold text-gray-900 mb-4">Company</h4>
+                    <ul class="space-y-2 text-sm text-gray-600">
+                        <li><a href="#" class="hover:text-brand-primary transition-colors">About Us</a></li>
+                        <li><a href="#" class="hover:text-brand-primary transition-colors">Careers</a></li>
+                        <li><a href="#" class="hover:text-brand-primary transition-colors">Press</a></li>
+                        <li><a href="#" class="hover:text-brand-primary transition-colors">Blog</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold text-gray-900 mb-4">Support</h4>
+                    <ul class="space-y-2 text-sm text-gray-600">
+                        <li><a href="#" class="hover:text-brand-primary transition-colors">Help Center</a></li>
+                        <li><a href="#" class="hover:text-brand-primary transition-colors">Terms of Service</a></li>
+                        <li><a href="#" class="hover:text-brand-primary transition-colors">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-brand-primary transition-colors">Contact Us</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="pt-8 border-t border-brand-sage/20 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-sm text-gray-500">© 2024 WanderAI. All rights reserved.</p>
+                <div class="flex items-center gap-6 text-sm text-gray-500">
+                    <span class="flex items-center gap-2">
+                        <i data-lucide="globe" class="w-4 h-4"></i>
+                        English (US)
+                    </span>
+                    <span class="flex items-center gap-2">
+                        <i data-lucide="dollar-sign" class="w-4 h-4"></i>
+                        USD
+                    </span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- AI Chat Widget -->
+    <div id="ai-chat" class="fixed bottom-6 right-6 w-96 bg-white rounded-3xl shadow-2xl z-50 transform translate-y-[120%] transition-transform duration-500 border border-gray-100 overflow-hidden">
+        <div class="bg-gradient-to-r from-brand-primary to-brand-accent p-4 text-white flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
+                    <i data-lucide="sparkles" class="w-5 h-5"></i>
+                </div>
+                <div>
+                    <div class="font-semibold">WanderAI Assistant</div>
+                    <div class="text-xs text-white/80">Always here to help</div>
+                </div>
+            </div>
+            <button onclick="toggleAIChat()" class="text-white/80 hover:text-white">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+        </div>
+        
+        <div class="h-80 overflow-y-auto p-4 bg-gray-50" id="chat-messages">
+            <div class="ai-bubble bg-white rounded-2xl rounded-tl-none p-3 text-sm text-gray-700 shadow-sm mb-3 max-w-[85%]">
+                👋 Hi! I'm your AI travel assistant. Looking for business meetings or leisure activities today?
+            </div>
+        </div>
+        
+        <div class="p-4 bg-white border-t">
+            <div class="flex gap-2">
+                <input type="text" id="chat-input" placeholder="Ask about destinations, flights..." class="flex-1 px-4 py-2 rounded-full bg-gray-100 text-sm outline-none focus:ring-2 focus:ring-brand-primary/20" onkeypress="handleChatKeypress(event)">
+                <button onclick="sendMessage()" class="px-4 py-2 rounded-full bg-brand-primary text-white hover:bg-brand-dark transition-colors">
+                    <i data-lucide="send" class="w-4 h-4"></i>
+                </button>
+            </div>
+            <div class="flex gap-2 mt-3 overflow-x-auto pb-1">
+                <button onclick="quickReply('Find me a beach resort')" class="px-3 py-1 rounded-full bg-brand-light text-xs text-brand-primary whitespace-nowrap hover:bg-brand-sage/30 transition-colors">🏖️ Beach resort</button>
+                <button onclick="quickReply('Business hotels near me')" class="px-3 py-1 rounded-full bg-blue-50 text-xs text-blue-700 whitespace-nowrap hover:bg-blue-100 transition-colors">💼 Business hotels</button>
+                <button onclick="quickReply('Local food recommendations')" class="px-3 py-1 rounded-full bg-orange-50 text-xs text-orange-700 whitespace-nowrap hover:bg-orange-100 transition-colors">🍜 Local food</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Chat Button -->
+    <button onclick="toggleAIChat()" id="chat-fab" class="fixed bottom-6 right-6 w-14 h-14 bg-brand-primary hover:bg-brand-dark text-white rounded-full shadow-2xl flex items-center justify-center z-40 transition-all hover:scale-110">
+        <i data-lucide="message-circle" class="w-6 h-6"></i>
+    </button>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+        
+        // Global state
+        let currentMode = 'leisure';
+        let userLocation = null;
+        
+        // Activity data for different modes
+        const activitiesData = {
+            leisure: [
+                {
+                    id: 1,
+                    title: "Hidden Waterfall Hike",
+                    location: "2.3 km away",
+                    rating: 4.9,
+                    reviews: 128,
+                    price: "$45",
+                    image: "https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?w=400&q=80",
+                    tag: "Nature",
+                    tagColor: "bg-green-100 text-green-700"
+                },
+                {
+                    id: 2,
+                    title: "Sunset Wine Tasting",
+                    location: "1.8 km away",
+                    rating: 4.8,
+                    reviews: 89,
+                    price: "$65",
+                    image: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=400&q=80",
+                    tag: "Culinary",
+                    tagColor: "bg-purple-100 text-purple-700"
+                },
+                {
+                    id: 3,
+                    title: "Old Town Walking Tour",
+                    location: "0.5 km away",
+                    rating: 4.7,
+                    reviews: 234,
+                    price: "$25",
+                    image: "https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?w=400&q=80",
+                    tag: "Culture",
+                    tagColor: "bg-amber-100 text-amber-700"
+                },
+                {
+                    id: 4,
+                    title: "Kayaking Adventure",
+                    location: "5.2 km away",
+                    rating: 4.9,
+                    reviews: 67,
+                    price: "$55",
+                    image: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=400&q=80",
+                    tag: "Adventure",
+                    tagColor: "bg-blue-100 text-blue-700"
+                }
+            ],
+            business: [
+                {
+                    id: 1,
+                    title: "Executive Coworking Space",
+                    location: "0.3 km away",
+                    rating: 4.8,
+                    reviews: 156,
+                    price: "$35/day",
+                    image: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=400&q=80",
+                    tag: "Workspace",
+                    tagColor: "bg-blue-100 text-blue-700"
+                },
+                {
+                    id: 2,
+                    title: "Business Lunch Venue",
+                    location: "1.2 km away",
+                    rating: 4.6,
+                    reviews: 89,
+                    price: "$45/person",
+                    image: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400&q=80",
+                    tag: "Dining",
+                    tagColor: "bg-orange-100 text-orange-700"
+                },
+                {
+                    id: 3,
+                    title: "Conference Center",
+                    location: "2.1 km away",
+                    rating: 4.9,
+                    reviews: 45,
+                    price: "$200/day",
+                    image: "https://images.unsplash.com/photo-1517502884422-41eaead166d4?w=400&q=80",
+                    tag: "Meeting",
+                    tagColor: "bg-indigo-100 text-indigo-700"
+                },
+                {
+                    id: 4,
+                    title: "Networking Rooftop Bar",
+                    location: "0.8 km away",
+                    rating: 4.7,
+                    reviews: 203,
+                    price: "Free entry",
+                    image: "https://images.unsplash.com/photo-1470337458703-46ad1756a187?w=400&q=80",
+                    tag: "Networking",
+                    tagColor: "bg-purple-100 text-purple-700"
+                }
+            ]
+        };
+        
+        // Typewriter effect
+        const words = ['curiosity', 'wanderlust', 'ambition', 'passion', 'dreams'];
+        let wordIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        const typewriterElement = document.getElementById('typewriter');
+        
+        function typeWriter() {
+            const currentWord = words[wordIndex];
+            
+            if (isDeleting) {
+                typewriterElement.textContent = currentWord.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                typewriterElement.textContent = currentWord.substring(0, charIndex + 1);
+                charIndex++;
+            }
+            
+            let typeSpeed = isDeleting ? 50 : 100;
+            
+            if (!isDeleting && charIndex === currentWord.length) {
+                typeSpeed = 2000;
+                isDeleting = true;
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                wordIndex = (wordIndex + 1) % words.length;
+                typeSpeed = 500;
+            }
+            
+            setTimeout(typeWriter, typeSpeed);
+        }
+        
+        // Initialize typewriter
+        setTimeout(typeWriter, 1000);
+        
+        // Mode switching
+        function setMode(mode) {
+            currentMode = mode;
+            const leisureBtn = document.getElementById('btn-leisure');
+            const businessBtn = document.getElementById('btn-business');
+            const navbar = document.getElementById('navbar');
+            
+            if (mode === 'leisure') {
+                leisureBtn.classList.add('mode-leisure-active');
+                leisureBtn.classList.remove('text-white/80');
+                businessBtn.classList.remove('mode-business-active');
+                businessBtn.classList.add('text-white/80');
+                document.body.style.setProperty('--mode-primary', '#2D5A4A');
+            } else {
+                businessBtn.classList.add('mode-business-active');
+                businessBtn.classList.remove('text-white/80');
+                leisureBtn.classList.remove('mode-leisure-active');
+                leisureBtn.classList.add('text-white/80');
+                document.body.style.setProperty('--mode-primary', '#1e3a8a');
+            }
+            
+            // Update activities
+            renderActivities();
+            
+            // Show notification
+            showNotification(`Switched to ${mode} mode`);
+        }
+        
+        // Render activities based on mode
+        function renderActivities(filter = 'all') {
+            const grid = document.getElementById('activities-grid');
+            const activities = activitiesData[currentMode];
+            
+            grid.innerHTML = activities.map((activity, index) => `
+                <div class="activity-card group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer scroll-reveal" style="animation-delay: ${index * 0.1}s" onclick="openActivity(${activity.id})">
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="${activity.image}" alt="${activity.title}" class="activity-image w-full h-full object-cover">
+                        <div class="absolute top-3 left-3">
+                            <span class="px-3 py-1 rounded-full text-xs font-semibold ${activity.tagColor}">${activity.tag}</span>
+                        </div>
+                        <div class="absolute top-3 right-3">
+                            <button class="w-8 h-8 rounded-full bg-white/90 flex items-center justify-center text-gray-600 hover:text-red-500 transition-colors" onclick="event.stopPropagation(); toggleHeart(this)">
+                                <i data-lucide="heart" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <div class="flex items-center gap-1 text-sm text-gray-500 mb-1">
+                            <i data-lucide="map-pin" class="w-3 h-3"></i>
+                            <span>${activity.location}</span>
+                        </div>
+                        <h3 class="font-semibold text-gray-900 mb-2 group-hover:text-brand-primary transition-colors">${activity.title}</h3>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-1">
+                                <i data-lucide="star" class="w-4 h-4 fill-yellow-400 text-yellow-400"></i>
+                                <span class="font-semibold text-sm">${activity.rating}</span>
+                                <span class="text-gray-400 text-sm">(${activity.reviews})</span>
+                            </div>
+                            <div class="font-bold text-brand-primary">${activity.price}</div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            
+            lucide.createIcons();
+            
+            // Re-trigger scroll reveal
+            setTimeout(() => {
+                document.querySelectorAll('.scroll-reveal').forEach(el => {
+                    el.classList.add('visible');
+                });
+            }, 100);
+        }
+        
+        // Filter activities
+        function filterActivities(type) {
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active', 'bg-brand-primary', 'text-white');
+                btn.classList.add('bg-white', 'text-gray-600');
+            });
+            event.target.classList.remove('bg-white', 'text-gray-600');
+            event.target.classList.add('active', 'bg-brand-primary', 'text-white');
+            
+            // Simulate filtering with animation
+            const grid = document.getElementById('activities-grid');
+            grid.style.opacity = '0';
+            grid.style.transform = 'translateY(20px)';
+            
+            setTimeout(() => {
+                renderActivities(type);
+                grid.style.transition = 'all 0.5s';
+                grid.style.opacity = '1';
+                grid.style.transform = 'translateY(0)';
+            }, 300);
+        }
+        
+        // Heart toggle
+        function toggleHeart(btn) {
+            const icon = btn.querySelector('i');
+            if (btn.classList.contains('text-red-500')) {
+                btn.classList.remove('text-red-500');
+                btn.classList.add('text-gray-600');
+                icon.setAttribute('fill', 'none');
+            } else {
+                btn.classList.add('text-red-500');
+                btn.classList.remove('text-gray-600');
+                icon.setAttribute('fill', 'currentColor');
+            }
+        }
+        
+        // Chat functionality
+        function toggleAIChat() {
+            const chat = document.getElementById('ai-chat');
+            const fab = document.getElementById('chat-fab');
+            
+            if (chat.classList.contains('translate-y-[120%]')) {
+                chat.classList.remove('translate-y-[120%]');
+                fab.classList.add('scale-0');
+            } else {
+                chat.classList.add('translate-y-[120%]');
+                fab.classList.remove('scale-0');
+            }
+        }
+        
+        function handleChatKeypress(e) {
+            if (e.key === 'Enter') sendMessage();
+        }
+        
+        function quickReply(text) {
+            document.getElementById('chat-input').value = text;
+            sendMessage();
+        }
+        
+        function sendMessage() {
+            const input = document.getElementById('chat-input');
+            const message = input.value.trim();
+            if (!message) return;
+            
+            const messagesContainer = document.getElementById('chat-messages');
+            
+            // User message
+            messagesContainer.innerHTML += `
+                <div class="ai-bubble bg-brand-primary text-white rounded-2xl rounded-tr-none p-3 text-sm max-w-[85%] ml-auto mb-3 shadow-sm">
+                    ${message}
+                </div>
+            `;
+            
+            input.value = '';
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            
+            // AI response simulation
+            setTimeout(() => {
+                const responses = [
+                    "I'd recommend checking out the hidden waterfall hike just 2km from you! It's perfect for your current mode.",
+                    "Based on your location, I found 3 excellent business meeting venues with availability today.",
+                    "Great choice! I can book that for you right now. Would you like me to arrange transportation too?",
+                    "I've analyzed the reviews and found that this spot has the best ratings for photography during sunset hours."
+                ];
+                const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+                
+                messagesContainer.innerHTML += `
+                    <div class="ai-bubble bg-white rounded-2xl rounded-tl-none p-3 text-sm text-gray-700 shadow-sm mb-3 max-w-[85%] flex items-start gap-2">
+                        <div class="w-6 h-6 rounded-full bg-brand-primary flex-shrink-0 flex items-center justify-center text-white text-xs">
+                            <i data-lucide="sparkles" class="w-3 h-3"></i>
+                        </div>
+                        <span>${randomResponse}</span>
+                    </div>
+                `;
+                
+                lucide.createIcons();
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }, 1000);
+        }
+        
+        // Search functionality
+        function searchDestinations() {
+            const destination = document.getElementById('destination-input').value;
+            if (destination) {
+                showNotification(`Searching for ${destination}...`);
+                setTimeout(() => {
+                    document.getElementById('activities-grid').scrollIntoView({ behavior: 'smooth' });
+                }, 500);
+            } else {
+                showNotification('Please enter a destination');
+            }
+        }
+        
+        // Open destination detail
+        function openDestination(name) {
+            showNotification(`Opening ${name} details...`);
+        }
+        
+        // Open activity detail
+        function openActivity(id) {
+            showNotification('Opening activity details...');
+        }
+        
+        // Notification system
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.className = 'fixed top-24 left-1/2 transform -translate-x-1/2 bg-brand-dark text-white px-6 py-3 rounded-full shadow-2xl z-50 animate-fade-in-up flex items-center gap-2';
+            notification.innerHTML = `
+                <i data-lucide="info" class="w-4 h-4"></i>
+                <span class="font-medium">${message}</span>
+            `;
+            document.body.appendChild(notification);
+            lucide.createIcons();
+            
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                notification.style.transform = 'translateX(-50%) translateY(-10px)';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+        
+        // Geolocation simulation
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        userLocation = position.coords;
+                        document.getElementById('location-text').textContent = 'Showing activities near your current location in Singapore';
+                    },
+                    (error) => {
+                        document.getElementById('location-text').textContent = 'Showing popular activities in Singapore';
+                    }
+                );
+            } else {
+                document.getElementById('location-text').textContent = 'Showing popular activities in Singapore';
+            }
+        }
+        
+        // Scroll effects
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 100) {
+                navbar.classList.add('bg-white/90', 'backdrop-blur-lg', 'shadow-sm');
+            } else {
+                navbar.classList.remove('bg-white/90', 'backdrop-blur-lg', 'shadow-sm');
+            }
+            
+            // Parallax effect
+            const scrolled = window.pageYOffset;
+            const parallaxElements = document.querySelectorAll('.parallax-layer');
+            parallaxElements.forEach(el => {
+                const speed = 0.5;
+                el.style.transform = `translateY(${scrolled * speed}px)`;
+            });
+            
+            // Scroll reveal
+            document.querySelectorAll('.scroll-reveal').forEach(el => {
+                const rect = el.getBoundingClientRect();
+                const isVisible = rect.top < window.innerHeight - 100;
+                if (isVisible) {
+                    el.classList.add('visible');
+                }
+            });
+        });
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            renderActivities();
+            getLocation();
+            
+            // Initial scroll reveal
+            setTimeout(() => {
+                document.querySelectorAll('.scroll-reveal').forEach(el => {
+                    el.classList.add('visible');
+                });
+            }, 500);
+        });
+        
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
